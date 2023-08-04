@@ -1,7 +1,7 @@
 package com.ziroom.zyl.mybatisPlus.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ziroom.zyl.entity.User;
+import com.ziroom.zyl.mybatisPlus.entity.User;
 import com.ziroom.zyl.mybatisPlus.mapper.UserMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;

@@ -14,4 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Data
 public class User implements Serializable {
+    private String userName;
+
+    private String age;
 }

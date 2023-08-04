@@ -1,7 +1,7 @@
 package com.ziroom.zyl.mybatisPlus.mapper;
 
-import com.ziroom.zyl.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.ziroom.zyl.mybatisPlus.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
