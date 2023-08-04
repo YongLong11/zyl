@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="my_mysql_tables" targetRuntime="MyBatis3" defaultModelType="flat">
+        <!-- 为sql关键字添加分隔符 -->
+        <property name="autoDelimitKeywords" value="true"/>
+        <!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+            <property name="searchString" value="Example$"/>
+            <property name="replaceString" value="Criteria"/>
+        </plugin>
+
+        <plugin type="com.github.dcendents.mybatis.generator.plugin.rename.RenameExampleClassAndMethodsPlugin">
+            <property name="classMethodSearchString" value="Example"/>
+            <property name="classMethodReplaceString" value="Filter"/>
+            <property name="parameterSearchString" value="example"/>
+            <property name="parameterReplaceString" value="filter"/>
+        </plugin>
+
+        <!--生成mapper.xml时覆盖原文件-->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
+
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://10.30.7.152:3306/quality_defende?serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;allowMultiQueries=true&amp;useSSL=false"
+                        userId="ceshi_qualitydefende_user"
+                        password="a55720040febffbc"/>
+
+        <!-- 主要是配置 targetPackage -->
+        <javaModelGenerator targetPackage="com.ziroom.zyl.mybatisGenerate.dao.entity" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="com.ziroom.zyl.mybatisGenerate.dao.mapper" targetProject="src/main/java">
+            <property name="enableDeleteByExample" value="true"/>
+            <property name="enableCountByExample" value="true"/>
+            <property name="enableUpdateByExample" value="true"/>
+            <property name="enableSelectByExample" value="true"/>
+            <property name="selectByExampleQueryId" value="true"/>
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <javaClientGenerator targetPackage="com.ziroom.zyl.mybatisGenerate.dao.mapper" targetProject="src/main/java"
+                             type="XMLMAPPER">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- 主要是配置表生成entity，mapper，xml -->
+        <!-- 只需要配置表名和主键配置 -->
+
+        <table tableName="zyl_user" enableCountByExample="true" enableUpdateByExample="true"
+               enableSelectByExample="true"
+               selectByExampleQueryId="true">
+            <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
+        </table>
+
+    </context>
+</generatorConfiguration>
