@@ -2,7 +2,9 @@ package com.ziroom.zyl.controller;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.ziroom.zyl.aop.Retryable;
 import com.ziroom.zyl.common.Resp;
+import com.ziroom.zyl.common.exception.BusinessException;
 import com.ziroom.zyl.service.EasyExcelService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,9 +35,9 @@ public class Hello {
     @PostMapping("/hello-world")
 //    @MethodLog()
 //    @Limiter(time = 10, count = 2)
+    @Retryable
     public Resp<String> hello(HttpServletRequest request){
-
-        return Resp.success("hello");
+        throw new BusinessException("");
     }
 
 //    @GetMapping("/world")
