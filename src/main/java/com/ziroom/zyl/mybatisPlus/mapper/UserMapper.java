@@ -1,4 +1,4 @@
-package com.ziroom.zyl.mapper;
+package com.ziroom.zyl.mybatisPlus.mapper;
 
 import com.ziroom.zyl.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

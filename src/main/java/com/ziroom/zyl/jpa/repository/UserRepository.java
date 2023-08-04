@@ -1,6 +1,6 @@
-package com.ziroom.zyl.repository;
+package com.ziroom.zyl.jpa.repository;
 
-import com.ziroom.zyl.entity.User;
+import com.ziroom.zyl.jpa.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Component;

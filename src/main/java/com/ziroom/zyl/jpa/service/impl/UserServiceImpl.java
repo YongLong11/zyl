@@ -1,33 +1,24 @@
-package com.ziroom.zyl.service;
+package com.ziroom.zyl.jpa.service.impl;
+
 
 import com.google.common.collect.Lists;
-import com.ziroom.zyl.entity.User;
-import com.ziroom.zyl.repository.UserRepository;
-import lombok.extern.slf4j.Slf4j;
+import com.ziroom.zyl.jpa.repository.UserRepository;
+import com.ziroom.zyl.jpa.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
+import com.ziroom.zyl.jpa.entity.User;
 
 import javax.annotation.Resource;
 import javax.persistence.criteria.Predicate;
 import java.util.List;
 
-/**
- * @ClassName：UserService
- * @Description：
- * @Author：zhangyl31@ziroom.com
- * @Data：2023/4/25 11:27
- **/
-@Service
-@Slf4j
-public class UserService {
-
+public class UserServiceImpl implements UserService {
     @Resource
     private UserRepository userRepository;
 
-//    @Cacheable(value = "redisCacheManager")
+    //    @Cacheable(value = "redisCacheManager")
     public Page<User> getUserByPage(User user, Integer pageNum, Integer pageSize ){
         Specification<User> specification = (Specification<User>) (r, q, cb) -> {
             List<Predicate> predicates = Lists.newArrayList();

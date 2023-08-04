@@ -1,4 +1,4 @@
-package com.ziroom.zyl.entity;
+package com.ziroom.zyl.jpa.entity;
 
 import lombok.Data;
 
