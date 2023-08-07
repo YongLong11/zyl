@@ -1,4 +1,4 @@
-package com.ziroom.zyl.interfaces;
+package com.ziroom.zyl.initLoad.beanNameGenerator;
 
 import java.lang.annotation.*;
 

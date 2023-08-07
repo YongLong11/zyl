@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  * @since 2023-08-04
  */
 @Mapper
-@Component
+@Component("mybatis-plus-user-mapper")
 public interface UserMapper extends BaseMapper<User> {
 
 }

@@ -32,9 +32,9 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://10.30.7.152:3306/quality_defende?serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;allowMultiQueries=true&amp;useSSL=false"
-                        userId="ceshi_qualitydefende_user"
-                        password="a55720040febffbc"/>
+                        connectionURL="jdbc:mysql://10.30.7.107:3306/zyl?characterEncoding=UTF8&amp;useSSL=false"
+                        userId="dev_jcpt"
+                        password="ziroomdb"/>
 
         <!-- 主要是配置 targetPackage -->
         <javaModelGenerator targetPackage="com.ziroom.zyl.mybatisGenerate.dao.entity" targetProject="src/main/java">
@@ -58,7 +58,7 @@
         <!-- 主要是配置表生成entity，mapper，xml -->
         <!-- 只需要配置表名和主键配置 -->
 
-        <table tableName="zyl_user" enableCountByExample="true" enableUpdateByExample="true"
+        <table tableName="user" enableCountByExample="true" enableUpdateByExample="true"
                enableSelectByExample="true"
                selectByExampleQueryId="true">
             <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>

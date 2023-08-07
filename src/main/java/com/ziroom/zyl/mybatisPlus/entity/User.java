@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-@TableName("zyl_user")
+@TableName("user")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

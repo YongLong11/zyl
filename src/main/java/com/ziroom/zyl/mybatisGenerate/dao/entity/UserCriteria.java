@@ -3,14 +3,14 @@ package com.ziroom.zyl.mybatisGenerate.dao.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ZylUserCriteria {
+public class UserCriteria {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public ZylUserCriteria() {
+    public UserCriteria() {
         oredCriteria = new ArrayList<Criteria>();
     }
 

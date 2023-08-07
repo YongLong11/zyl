@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ziroom.zyl.mybatisGenerate.mapper.ZylUserMapper">
-  <resultMap id="BaseResultMap" type="com.ziroom.zyl.mybatisGenerate.dao.entity.ZylUser">
+<mapper namespace="com.ziroom.zyl.mybatisGenerate.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.ziroom.zyl.mybatisGenerate.dao.entity.User">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="age" jdbcType="VARCHAR" property="age" />
@@ -70,14 +70,14 @@
   <sql id="Base_Column_List">
     id, user_name, age, code, email, `name`
   </sql>
-  <select id="selectByFilter" parameterType="com.ziroom.zyl.mybatisGenerate.dao.entity.ZylUserCriteria" resultMap="BaseResultMap">
+  <select id="selectByFilter" parameterType="com.ziroom.zyl.mybatisGenerate.dao.entity.UserCriteria" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     'true' as QUERYID,
     <include refid="Base_Column_List" />
-    from zyl_user
+    from user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -88,33 +88,33 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from zyl_user
+    from user
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from zyl_user
+    delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByFilter" parameterType="com.ziroom.zyl.mybatisGenerate.dao.entity.ZylUserCriteria">
-    delete from zyl_user
+  <delete id="deleteByFilter" parameterType="com.ziroom.zyl.mybatisGenerate.dao.entity.UserCriteria">
+    delete from user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ziroom.zyl.mybatisGenerate.dao.entity.ZylUser">
+  <insert id="insert" parameterType="com.ziroom.zyl.mybatisGenerate.dao.entity.User">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into zyl_user (user_name, age, code, 
+    insert into user (user_name, age, code, 
       email, `name`)
     values (#{userName,jdbcType=VARCHAR}, #{age,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.ziroom.zyl.mybatisGenerate.dao.entity.ZylUser">
+  <insert id="insertSelective" parameterType="com.ziroom.zyl.mybatisGenerate.dao.entity.User">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into zyl_user
+    insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userName != null">
         user_name,
@@ -150,14 +150,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByFilter" parameterType="com.ziroom.zyl.mybatisGenerate.dao.entity.ZylUserCriteria" resultType="java.lang.Long">
-    select count(*) from zyl_user
+  <select id="countByFilter" parameterType="com.ziroom.zyl.mybatisGenerate.dao.entity.UserCriteria" resultType="java.lang.Long">
+    select count(*) from user
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByFilterSelective" parameterType="map">
-    update zyl_user
+    update user
     <set>
       <if test="record.id != null">
         
@@ -183,7 +183,7 @@
     </if>
   </update>
   <update id="updateByFilter" parameterType="map">
-    update zyl_user
+    update user
     set 
       user_name = #{record.userName,jdbcType=VARCHAR},
       age = #{record.age,jdbcType=VARCHAR},
@@ -194,8 +194,8 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ziroom.zyl.mybatisGenerate.dao.entity.ZylUser">
-    update zyl_user
+  <update id="updateByPrimaryKeySelective" parameterType="com.ziroom.zyl.mybatisGenerate.dao.entity.User">
+    update user
     <set>
       <if test="userName != null">
         user_name = #{userName,jdbcType=VARCHAR},
@@ -215,8 +215,8 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ziroom.zyl.mybatisGenerate.dao.entity.ZylUser">
-    update zyl_user
+  <update id="updateByPrimaryKey" parameterType="com.ziroom.zyl.mybatisGenerate.dao.entity.User">
+    update user
     set user_name = #{userName,jdbcType=VARCHAR},
       age = #{age,jdbcType=VARCHAR},
       code = #{code,jdbcType=VARCHAR},

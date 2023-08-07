@@ -1,6 +1,6 @@
 package com.ziroom.zyl.mybatisGenerate.dao.entity;
 
-public class ZylUser {
+public class User {
     private Integer id;
 
     private String userName;

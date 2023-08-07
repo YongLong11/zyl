@@ -1,7 +1,7 @@
 package com.ziroom.zyl.service.mybatisGenerate;
 
 import com.alibaba.fastjson.JSONObject;
-import com.ziroom.zyl.mybatisGenerate.dao.entity.ZylUser;
+import com.ziroom.zyl.mybatisGenerate.dao.entity.User;
 import com.ziroom.zyl.mybatisGenerate.service.MybatisGenerateUserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,9 +17,9 @@ public class UserSertcieTest {
 
     @Test
     void testUser(){
-        List<ZylUser> users = mybatisGenerateUserService.getUsers(1);
+        List<User> users = mybatisGenerateUserService.getUsers(1);
         System.out.println(JSONObject.toJSONString(users));
-        ZylUser one = mybatisGenerateUserService.getOne(1);
+        User one = mybatisGenerateUserService.getOne(1);
         System.out.println(JSONObject.toJSONString(one));
     }
 

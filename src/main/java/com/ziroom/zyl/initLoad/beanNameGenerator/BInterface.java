@@ -1,16 +1,16 @@
-package com.ziroom.zyl.interfaces;
+package com.ziroom.zyl.initLoad.beanNameGenerator;
 
 import org.springframework.stereotype.Service;
 
 @Service
 @BeanName(name = "AAA")
-public class AInterface extends AbstractInterface{
+public class BInterface {
 
     public void send(){
-        System.out.println("AAAAA");
+        System.out.println("BBBBBBBB");
     }
 
     public String registerSelf(){
-        return "A";
+        return "B";
     }
 }
