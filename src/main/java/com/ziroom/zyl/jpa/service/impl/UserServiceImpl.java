@@ -9,11 +9,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import com.ziroom.zyl.jpa.entity.User;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.persistence.criteria.Predicate;
 import java.util.List;
 
+@Service(value = "jpa-user-service")
 public class UserServiceImpl implements UserService {
     @Resource
     private UserRepository userRepository;

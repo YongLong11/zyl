@@ -2,7 +2,7 @@ package com.ziroom.zyl.aop;
 
 import java.lang.annotation.*;
 
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target(value = {ElementType.METHOD, ElementType.TYPE})
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Limiter {

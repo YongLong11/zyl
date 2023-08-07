@@ -7,7 +7,7 @@ import java.lang.annotation.*;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target(value = {ElementType.TYPE, ElementType.METHOD})
 public @interface Retryable {
 
     int retryTimes() default 3;

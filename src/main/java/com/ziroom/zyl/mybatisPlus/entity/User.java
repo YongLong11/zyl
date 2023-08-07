@@ -8,12 +8,14 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-@TableName("user")
+@TableName("zyl_user")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class User implements Serializable {
+
+    private Long id;
     private String userName;
 
     private String age;

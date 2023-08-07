@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * @param: null
  * @return: null
  **/
-@Target({ ElementType.METHOD })
+@Target(value = { ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MethodLog {
     boolean cost() default false;

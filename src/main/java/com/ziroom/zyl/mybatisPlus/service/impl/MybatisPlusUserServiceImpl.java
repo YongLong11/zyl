@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.ziroom.zyl.mybatisPlus.entity.User;
 import com.ziroom.zyl.mybatisPlus.mapper.UserMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ziroom.zyl.mybatisPlus.service.MybatisPlusUserService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +16,6 @@ import org.springframework.stereotype.Service;
  * @since 2023-08-04
  */
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IService<User> {
+public class MybatisPlusUserServiceImpl extends ServiceImpl<UserMapper, User> implements MybatisPlusUserService {
 
 }

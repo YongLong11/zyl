@@ -1,4 +1,4 @@
-package com.ziroom.zyl.mybatisGenerate.dao.mapper;
+package com.ziroom.zyl.mybatisGenerate.mapper;
 
 import com.ziroom.zyl.mybatisGenerate.dao.entity.ZylUser;
 import com.ziroom.zyl.mybatisGenerate.dao.entity.ZylUserCriteria;
