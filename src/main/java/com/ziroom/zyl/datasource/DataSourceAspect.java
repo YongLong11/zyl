@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 @Order(1)
 public class DataSourceAspect {
 
-    @Pointcut("execution( * com.ziroom.zyl.mybatisGenerate.service..*(..))")
+    @Pointcut("@annotation(com.ziroom.zyl.datasource.TargetDataSource) || execution( * com.ziroom.zyl.mybatisGenerate.service..*(..))")
     public void dataSourcePoint() {}
 
     @Around("dataSourcePoint()")

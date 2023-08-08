@@ -1,7 +1,5 @@
 package com.ziroom.zyl.datasource;
 
-import org.springframework.stereotype.Component;
-
 public class DynamicDataSourceHolder {
 
     private static final ThreadLocal<String> THREAD_LOCAL = new ThreadLocal<String>();
