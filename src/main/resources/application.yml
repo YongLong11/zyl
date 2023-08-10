@@ -18,16 +18,16 @@ spring:
         driver-class-name: com.mysql.cj.jdbc.Driver
         initialSize: 5
         minIdle: 5
-
-message:
-  url: http://message-api-new.kt.ziroom.com/
-  email:
-    token: 9UrbzbeDSgeDpxC4qf5Hmw
-  workwechat:
-    token: 607f97847e2166799c91c495
-    modelCode: WW-1618974644
-ehr:
-  baseurl: http://ehrnew.kt.ziroom.com/
+outApi:
+  message:
+    url: http://message-api-new.kt.ziroom.com/
+    email:
+      token: 9UrbzbeDSgeDpxC4qf5Hmw
+    workwechat:
+      token: 607f97847e2166799c91c495
+      modelCode: WW-1618974644
+  ehr:
+    url: http://ehrnew.kt.ziroom.com/
 rocketmq:
   namesrvAddr: 10.16.34.232:9876;10.16.34.233:9876
   producer:

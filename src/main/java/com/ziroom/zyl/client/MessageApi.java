@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(url = "1", name = "message-api")
+@FeignClient(url = "http://message-api-new.kt.ziroom.com", name = "message-api")
 public interface MessageApi {
 
     @PostMapping("api/work/wechat/send")

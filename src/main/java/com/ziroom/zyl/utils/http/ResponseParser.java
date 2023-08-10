@@ -14,7 +14,7 @@ public class ResponseParser {
 
     public static <T> T parse(String response, Class<T> clazz, UrlConfig urlConfig) {
         if (StringUtils.isBlank(response)) {
-            throw new BusinessException("");
+            throw new BusinessException("返回值为空");
         }
 
         JSONObject resultData = JSONObject.parseObject(response);

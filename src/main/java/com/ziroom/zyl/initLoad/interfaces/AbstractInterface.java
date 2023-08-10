@@ -4,7 +4,7 @@ import javax.annotation.PostConstruct;
 
 public abstract class AbstractInterface implements BaseInterfaces{
 
-    @PostConstruct
+//    @PostConstruct
     public void register(){
         InterfaceHelper.register(this);
     }

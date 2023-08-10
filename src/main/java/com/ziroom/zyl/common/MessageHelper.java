@@ -28,11 +28,11 @@ public class MessageHelper {
 
     @Resource
     private MessageApi messageApi;
-    @Value("${message.email.token}")
+    @Value("${outApi.message.email.token}")
     private String messageEmailToken;
-    @Value("${message.workwechat.token}")
+    @Value("${outApi.message.workwechat.token}")
     private String workWechatToken;
-    @Value("${message.workwechat.modelCode}")
+    @Value("${outApi.message.workwechat.modelCode}")
     private String workWechatModelCode;
     @Resource(name = "parallelPool")
     private Executor pool;
