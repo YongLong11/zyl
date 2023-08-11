@@ -7,9 +7,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum MessageUrlConfig implements UrlConfig {
 
-    SEND_WECHAT("api/work/wechat/send", "发送企业微信", "0");
+    SEND_WECHAT("api/work/wechat/send", "发送企业微信", "code", "0");
 
     private String url;
+
+    private String desc;
     private String succsessField;
     private String successCode;
 
