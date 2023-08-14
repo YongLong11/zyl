@@ -54,7 +54,7 @@ public class RedisAutoConfig {
     public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
 
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory);
-        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
+        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(10));
         redisCacheConfiguration = redisCacheConfiguration.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(getKeySerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(getValueSerializer()));
         return new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);

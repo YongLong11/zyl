@@ -40,9 +40,6 @@ public class Hello {
     @Resource
     RedisUtils redisUtils;
 
-    @Resource
-    CacheManager cacheManager;
-
     @GetMapping("/redis/set")
     public Resp redisSet(){
         redisUtils.set(RedisConstants.REDIS_TEST, 100);
@@ -56,16 +53,19 @@ public class Hello {
 
     @GetMapping("/redis/set/cache")
     public Resp redisSetFromCache(){
-        cacheManager.getCache("cacheManager").put(RedisConstants.REDIS_TEST_V, "hahhha");
+        redisUtils.setFromCacheManager("redisCacheManager", RedisConstants.REDIS_TEST_V, "hahhha");
         return  Resp.success();
     }
 
-    // todo 数据好像没有写入redis 从redis查不到这个 KEY
     @GetMapping("/redis/get/cache")
     public Resp redisGetFromCache(){
-        Cache.ValueWrapper valueWrapper = cacheManager.getCache("cacheManager").get(RedisConstants.REDIS_TEST_V);
-        Object o = valueWrapper.get();
-        return  Resp.success(o);
+        Object redisCacheManager = redisUtils.getFromCacheManager("redisCacheManager", RedisConstants.REDIS_TEST_V);
+        return  Resp.success(redisCacheManager);
+    }
+    @GetMapping("/redis/get/cache/class")
+    public Resp redisGetFromCacheByClass(){
+        String redisCacheManager = redisUtils.getFromCacheManager("redisCacheManager", RedisConstants.REDIS_TEST_V, String.class);
+        return  Resp.success(redisCacheManager);
     }
     @PostMapping("/hello-world")
 //    @MethodLog()

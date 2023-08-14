@@ -2,6 +2,8 @@ package com.ziroom.zyl.utils;
 
 import com.ziroom.zyl.common.constants.RedisConstants;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -23,6 +26,35 @@ public class RedisUtils {
 
     @Resource
     RedisTemplate<String, Object> redisTemplate;
+
+    @Resource
+    CacheManager cacheManager;
+
+    public Boolean setFromCacheManager(String cacheName, String key, Object value) {
+        Cache cache = cacheManager.getCache(cacheName);
+        if (Objects.nonNull(cache)) {
+            cache.put(key, value);
+            return true;
+        }
+        return false;
+    }
+
+    public Object getFromCacheManager(String cacheName, String key) {
+        Cache cache = cacheManager.getCache(cacheName);
+        if (Objects.nonNull(cache) && Objects.nonNull(cache.get(key))) {
+                return cache.get(key).get();
+        }
+        return null;
+    }
+
+    public <T> T getFromCacheManager(String cacheName, String key, Class<T> clazz) {
+        Cache cache = cacheManager.getCache(cacheName);
+        if (Objects.nonNull(cache)) {
+            return cache.get(key, clazz);
+        }
+        return null;
+    }
+
 
     public void set(String key, Object value) {
         redisTemplate.opsForValue().set(key, value);
