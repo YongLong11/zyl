@@ -53,8 +53,8 @@ public class Hello {
 
     @GetMapping("/redis/set/cache")
     public Resp redisSetFromCache(){
-        redisUtils.setFromCacheManager("redisCacheManager", RedisConstants.REDIS_TEST_V, "hahhha");
-        return  Resp.success();
+        Boolean aBoolean = redisUtils.setFromCacheManager("redisCacheManager", RedisConstants.REDIS_TEST_V, "hahhha");
+        return  Resp.success(aBoolean);
     }
 
     @GetMapping("/redis/get/cache")
