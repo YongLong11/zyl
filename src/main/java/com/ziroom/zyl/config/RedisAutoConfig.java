@@ -1,6 +1,7 @@
 package com.ziroom.zyl.config;
 
 import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
@@ -45,67 +46,20 @@ public class RedisAutoConfig {
         // 设置键key的序列化方式
         template.setKeySerializer(getKeySerializer());
         template.setHashKeySerializer(getKeySerializer());
-
         template.afterPropertiesSet();
         return template;
     }
 
-    @Primary
-    @Bean("redisCacheManager")
+    @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
 
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory);
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
-        redisCacheConfiguration = redisCacheConfiguration.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(getKeySerializer()));
-        redisCacheConfiguration = redisCacheConfiguration.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(getValueSerializer()));
-        RedisCacheManager redisCacheManager = new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
-        return redisCacheManager;
+        redisCacheConfiguration = redisCacheConfiguration.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(getKeySerializer()))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(getValueSerializer()));
+        return new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
 
-//        return RedisCacheManager
-//                .builder(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory))
-//                .cacheDefaults(RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(3))
-//                        .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(getKeySerializer()))
-//                        .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer((getValueSerializer()))))
-//                .build();
     }
-
-    // 缓存管理器，使用 @Cacheable 注解时，指定某个 cacheManager， 里面可以指定过期时间
-//    @Bean(name = "redisCacheManager")
-//    @Primary
-//    public RedisCacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory){
-//        return new RedisCacheManager(
-//                RedisCacheWriter
-//                        .nonLockingRedisCacheWriter(Objects
-//                                .requireNonNull(redisConnectionFactory)),
-//                RedisCacheConfiguration
-//                        .defaultCacheConfig()
-//                        .serializeValuesWith(
-//                                RedisSerializationContext
-//                                        .fromSerializer(new Jackson2JsonRedisSerializer<Object>(Object.class))
-//                                        .getValueSerializationPair()
-//                        )
-//        );
-//    }
-//    // 缓存管理器，使用 @Cacheable 注解时，指定某个 cacheManager， 里面可以指定过期时间
-//    @Bean(name = "redisCacheManager")
-//    @Primary
-//    public RedisCacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory){
-
-//        //配置序列化
-//        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
-//                //设置 key 过期时间
-//                .entryTtl(Duration.ofHours(3))
-//                .computePrefixWith(cacheName -> "redisCacheManager:")
-//                //设置key序列化规则
-//                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(getKeySerializer()))
-//                //设置value序列化规则
-//                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(getValueSerializer()))
-//                .disableCachingNullValues();
-//        return RedisCacheManager
-//                .builder(redisConnectionFactory)
-//                .cacheDefaults(config)
-//                .build();
-//    }
 
     // 将key 和 value序列化的方式抽出来，避免后续加 redisCacheManager 的序列化方式不一致
     private StringRedisSerializer getKeySerializer(){

@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,8 +40,8 @@ public class Hello {
     @Resource
     RedisUtils redisUtils;
 
-    @Resource(name = "redisCacheManager")
-    RedisCacheManager redisCacheManager;
+    @Resource
+    CacheManager cacheManager;
 
     @GetMapping("/redis/set")
     public Resp redisSet(){
@@ -55,13 +56,14 @@ public class Hello {
 
     @GetMapping("/redis/set/cache")
     public Resp redisSetFromCache(){
-        redisCacheManager.getCache("redisCacheManager").put(RedisConstants.REDIS_TEST, "hahhha");
+        cacheManager.getCache("cacheManager").put(RedisConstants.REDIS_TEST_V, "hahhha");
         return  Resp.success();
     }
 
+    // todo 数据好像没有写入redis 从redis查不到这个 KEY
     @GetMapping("/redis/get/cache")
     public Resp redisGetFromCache(){
-        Cache.ValueWrapper valueWrapper = redisCacheManager.getCache("redisCacheManager").get(RedisConstants.REDIS_TEST);
+        Cache.ValueWrapper valueWrapper = cacheManager.getCache("cacheManager").get(RedisConstants.REDIS_TEST_V);
         Object o = valueWrapper.get();
         return  Resp.success(o);
     }

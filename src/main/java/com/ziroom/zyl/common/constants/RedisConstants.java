@@ -11,6 +11,7 @@ import java.util.Set;
 public interface RedisConstants {
 
     String REDIS_TEST = "redis_test";
+    String REDIS_TEST_V = "redis_test_v";
 
     String ALL_USER_INFO_KEY = "all_user_info_key";
     String ALL_USER_INFO_LOCK = "all_user_info_lock";
