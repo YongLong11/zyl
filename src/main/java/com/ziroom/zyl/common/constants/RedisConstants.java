@@ -1,5 +1,7 @@
 package com.ziroom.zyl.common.constants;
 
+import java.util.Set;
+
 /**
  * @ClassName：RedisKeyConstants
  * @Description：
@@ -7,6 +9,8 @@ package com.ziroom.zyl.common.constants;
  * @Data：2023/5/4 20:40
  **/
 public interface RedisConstants {
+
+    String REDIS_TEST = "redis_test";
 
     String ALL_USER_INFO_KEY = "all_user_info_key";
     String ALL_USER_INFO_LOCK = "all_user_info_lock";

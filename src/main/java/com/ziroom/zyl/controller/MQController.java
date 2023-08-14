@@ -2,7 +2,7 @@ package com.ziroom.zyl.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.ziroom.zyl.common.Resp;
-import com.ziroom.zyl.mq.SendMQ;
+import com.ziroom.zyl.mq.RocketMQProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +16,11 @@ import javax.annotation.Resource;
 public class MQController {
 
     @Resource
-    private SendMQ sendMQ;
+    private RocketMQProducer rocketMQProducer;
 
     @GetMapping("/send")
     public Resp sendMQ(){
-        sendMQ.sendTopic("哈哈哈");
+        rocketMQProducer.sendTopic("哈哈哈");
         return Resp.success();
     }
 

@@ -4,11 +4,15 @@ import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.ziroom.zyl.aop.Retryable;
 import com.ziroom.zyl.common.Resp;
+import com.ziroom.zyl.common.constants.RedisConstants;
 import com.ziroom.zyl.common.exception.BusinessException;
 import com.ziroom.zyl.service.EasyExcelService;
+import com.ziroom.zyl.utils.RedisUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.cache.Cache;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -32,6 +36,35 @@ public class Hello {
     @Resource
     private EasyExcelService easyExcelService;
 
+    @Resource
+    RedisUtils redisUtils;
+
+    @Resource(name = "redisCacheManager")
+    RedisCacheManager redisCacheManager;
+
+    @GetMapping("/redis/set")
+    public Resp redisSet(){
+        redisUtils.set(RedisConstants.REDIS_TEST, 100);
+        return  Resp.success();
+    }
+
+    @GetMapping("/redis/get")
+    public Resp redisGet(){
+        return  Resp.success(redisUtils.get(RedisConstants.REDIS_TEST));
+    }
+
+    @GetMapping("/redis/set/cache")
+    public Resp redisSetFromCache(){
+        redisCacheManager.getCache("redisCacheManager").put(RedisConstants.REDIS_TEST, "hahhha");
+        return  Resp.success();
+    }
+
+    @GetMapping("/redis/get/cache")
+    public Resp redisGetFromCache(){
+        Cache.ValueWrapper valueWrapper = redisCacheManager.getCache("redisCacheManager").get(RedisConstants.REDIS_TEST);
+        Object o = valueWrapper.get();
+        return  Resp.success(o);
+    }
     @PostMapping("/hello-world")
 //    @MethodLog()
 //    @Limiter(time = 10, count = 2)

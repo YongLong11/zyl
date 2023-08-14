@@ -23,7 +23,7 @@ public class CUrl {
  * * In order to set Restricted Headers i.e. "Origin" etc., you may need to add "-Dsun.net.http.allowRestrictedHeaders=true" in JVM argument
  * * To use HTTPS Proxy Authorization, due to the HTTPS tunnel BASIC authentication has been disabled by default since JDK8u111, you may need to add "-Djdk.http.auth.tunneling.disabledSchemes=" in JVM argument
  * * To add JVM arguments In TOMCAT, modify catalina.bat/catalina.sh
- */
+*/
     private static final String VERSION = "1.2.2";
     private static final String DEFAULT_USER_AGENT = "Java-CURL version " + VERSION + " by Rocks Wang(https://github.com/rockswang)";
     private static final Pattern ptnOptionName = Pattern.compile("-{1,2}[a-zA-Z][a-zA-Z0-9\\-.]*");

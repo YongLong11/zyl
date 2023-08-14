@@ -19,6 +19,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.springframework.data.redis.cache.RedisCacheManager;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -143,7 +144,7 @@ public class HttpUtil {
     /**
      * map转url参数
      */
-    public static String  getParameter(Map<String, Object> map) {
+    public static String getParameter(Map<String, Object> map) {
         StringBuffer sb=new StringBuffer();
         if(map==null || map.isEmpty()){
             return sb.toString();
@@ -208,20 +209,7 @@ public class HttpUtil {
      * post请求 key-value值形式
      */
     public static <T> T post(final String url, Map<String,Object> param, final BiFunction<Integer, String, T> callback) {
-        CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
-        HttpPost httpPost = new HttpPost(url);
-        List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-        if(param!=null) {
-            Set set = param.keySet();
-            Iterator iterator = set.iterator();
-            while (iterator.hasNext()) {
-                Object key = iterator.next();
-                Object value = param.get(key);
-                formparams.add(new BasicNameValuePair(key.toString(), value.toString()));
-            }
-        }
-        httpPost.setEntity(new UrlEncodedFormEntity(formparams,UTF_8));
-        return execute(client, httpPost, callback);
+        return post(url, param, null, callback);
     }
 
 

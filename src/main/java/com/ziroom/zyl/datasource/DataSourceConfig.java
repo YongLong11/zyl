@@ -17,7 +17,6 @@ import java.util.Map;
 @Slf4j
 public class DataSourceConfig {
     /**
-     *
      * @return
      */
     @Bean(name = DataSourceConstant.ZYL)
@@ -28,7 +27,6 @@ public class DataSourceConfig {
     }
 
     /**
-     *
      * @return
      */
     @Bean(name = DataSourceConstant.OKR)
@@ -37,7 +35,6 @@ public class DataSourceConfig {
 //        return DataSourceBuilder.create().type(HikariDataSource.class).build();
         return DataSourceBuilder.create().build();
     }
-
 
     /**
      * 获取动态数据源
@@ -49,8 +46,8 @@ public class DataSourceConfig {
         DynamicDataSource dynamicDataSource = new DynamicDataSource();
         dynamicDataSource.setDefaultTargetDataSource(zylDataSource());
         Map<Object, Object> dataSourceMap = new HashMap<>();
-        dataSourceMap.put(DataSourceConstant.OKR,okrDataSource());
-        dataSourceMap.put(DataSourceConstant.ZYL,zylDataSource());
+        dataSourceMap.put(DataSourceConstant.OKR, okrDataSource());
+        dataSourceMap.put(DataSourceConstant.ZYL, zylDataSource());
         dynamicDataSource.setTargetDataSources(dataSourceMap);
         return dynamicDataSource;
     }

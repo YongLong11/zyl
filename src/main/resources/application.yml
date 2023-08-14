@@ -18,6 +18,10 @@ spring:
         driver-class-name: com.mysql.cj.jdbc.Driver
         initialSize: 5
         minIdle: 5
+  redis:
+    host: 10.216.4.116
+    port: 6384
+    timeout: 5000
 outApi:
   message:
     url: http://message-api-new.kt.ziroom.com/

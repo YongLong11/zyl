@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class ControllerAdvice {
 
     @ExceptionHandler(value = Throwable.class)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @Order(2)
     public Resp handleValidate(Exception exception){
         log.error("统一异常捕获 ", exception);
@@ -23,7 +23,7 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(value = {SQLException.class, DataAccessException.class})
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @Order(1)
     public Resp handleSqlValidate(Exception exception) {
         log.error(exception.getMessage(), exception);

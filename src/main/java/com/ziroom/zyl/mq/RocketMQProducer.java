@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 
 @Component
 @Slf4j
-public class SendMQ {
+public class RocketMQProducer {
 
     @Resource
     private DefaultMQProducer defaultMQProducer;

@@ -22,11 +22,10 @@ public class EasyExcelService {
     public <T> void writeExcel(HttpServletResponse response, String fileName,Integer sheetNo, List<T> data) throws IOException {
         // 防止中文乱码
         response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Access-Control-Expose-Headers","Content-Disposition");
         response.setCharacterEncoding("utf-8");
-
-        //设置保存文件名
-        fileName = URLEncoder.encode(fileName, "UTF-8");
-        response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + fileName + ".xlsx");
+        fileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+        response.setHeader("Content-disposition", String.format("attachment;filename=%s", fileName + ".xlsx"));
 
         ServletOutputStream outputStream = response.getOutputStream();
         try {
