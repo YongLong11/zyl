@@ -53,18 +53,18 @@ public class Hello {
 
     @GetMapping("/redis/set/cache")
     public Resp redisSetFromCache(){
-        Boolean aBoolean = redisUtils.setFromCacheManager("redisCacheManager", RedisConstants.REDIS_TEST_V, "hahhha");
+        Boolean aBoolean = redisUtils.setFromCacheManager(RedisConstants.CACHE_MANAGER_1, RedisConstants.REDIS_TEST_V, "hahhha");
         return  Resp.success(aBoolean);
     }
 
     @GetMapping("/redis/get/cache")
     public Resp redisGetFromCache(){
-        Object redisCacheManager = redisUtils.getFromCacheManager("redisCacheManager", RedisConstants.REDIS_TEST_V);
+        Object redisCacheManager = redisUtils.getFromCacheManager(RedisConstants.CACHE_MANAGER_1, RedisConstants.REDIS_TEST_V);
         return  Resp.success(redisCacheManager);
     }
     @GetMapping("/redis/get/cache/class")
     public Resp redisGetFromCacheByClass(){
-        String redisCacheManager = redisUtils.getFromCacheManager("redisCacheManager", RedisConstants.REDIS_TEST_V, String.class);
+        String redisCacheManager = redisUtils.getFromCacheManager(RedisConstants.CACHE_MANAGER_1, RedisConstants.REDIS_TEST_V, String.class);
         return  Resp.success(redisCacheManager);
     }
     @PostMapping("/hello-world")

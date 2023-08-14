@@ -9,7 +9,7 @@ import java.util.Set;
  * @Data：2023/5/4 20:40
  **/
 public interface RedisConstants {
-
+    String CACHE_MANAGER_1 = "cacheManager1";
     String REDIS_TEST = "redis_test";
     String REDIS_TEST_V = "redis_test_v";
 

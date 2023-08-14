@@ -1,6 +1,7 @@
 package com.ziroom.zyl.config;
 
 import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
+import com.ziroom.zyl.common.constants.RedisConstants;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -50,7 +51,7 @@ public class RedisAutoConfig {
         return template;
     }
 
-    @Bean
+    @Bean(name = RedisConstants.CACHE_MANAGER_1)
     public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
 
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory);
@@ -66,15 +67,8 @@ public class RedisAutoConfig {
         return new StringRedisSerializer();
     }
 
-    private JdkSerializationRedisSerializer getValueSerializer(){
-        return new JdkSerializationRedisSerializer(this.getClass().getClassLoader());
+    private FastJsonRedisSerializer<Object> getValueSerializer(){
+        return new FastJsonRedisSerializer<>(Object.class);
     }
 
-//    private RedisSerializer<String> keySerializer() {
-//        return new StringRedisSerializer();
-//    }
-//
-//    private JdkSerializationRedisSerializer getValueSerializer() {
-//        return new JdkSerializationRedisSerializer(this.getClass().getClassLoader());
-//    }
 }
