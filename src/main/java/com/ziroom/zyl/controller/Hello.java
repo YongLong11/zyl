@@ -5,6 +5,7 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.ziroom.zyl.aop.Retryable;
 import com.ziroom.zyl.common.Resp;
 import com.ziroom.zyl.common.constants.RedisConstants;
+import com.ziroom.zyl.common.enums.CacheEnum;
 import com.ziroom.zyl.common.exception.BusinessException;
 import com.ziroom.zyl.service.EasyExcelService;
 import com.ziroom.zyl.utils.RedisUtils;
@@ -53,18 +54,18 @@ public class Hello {
 
     @GetMapping("/redis/set/cache")
     public Resp redisSetFromCache(){
-        Boolean aBoolean = redisUtils.setFromCacheManager(RedisConstants.CACHE_MANAGER_1, RedisConstants.REDIS_TEST_V, "hahhha");
+        Boolean aBoolean = redisUtils.setFromCacheManager(CacheEnum.REDIS_TEST, RedisConstants.REDIS_TEST_V, "hahhha");
         return  Resp.success(aBoolean);
     }
 
     @GetMapping("/redis/get/cache")
     public Resp redisGetFromCache(){
-        Object redisCacheManager = redisUtils.getFromCacheManager(RedisConstants.CACHE_MANAGER_1, RedisConstants.REDIS_TEST_V);
+        Object redisCacheManager = redisUtils.getFromCacheManager(CacheEnum.REDIS_TEST, RedisConstants.REDIS_TEST_V);
         return  Resp.success(redisCacheManager);
     }
     @GetMapping("/redis/get/cache/class")
     public Resp redisGetFromCacheByClass(){
-        String redisCacheManager = redisUtils.getFromCacheManager(RedisConstants.CACHE_MANAGER_1, RedisConstants.REDIS_TEST_V, String.class);
+        String redisCacheManager = redisUtils.getFromCacheManager(CacheEnum.REDIS_TEST, RedisConstants.REDIS_TEST_V, String.class);
         return  Resp.success(redisCacheManager);
     }
     @PostMapping("/hello-world")

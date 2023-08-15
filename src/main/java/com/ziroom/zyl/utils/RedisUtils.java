@@ -1,6 +1,7 @@
 package com.ziroom.zyl.utils;
 
 import com.ziroom.zyl.common.constants.RedisConstants;
+import com.ziroom.zyl.common.enums.CacheEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -27,11 +28,11 @@ public class RedisUtils {
     @Resource
     RedisTemplate<String, Object> redisTemplate;
 
-    @Resource
+    @Resource(name = "redisCacheManager")
     CacheManager cacheManager;
 
-    public Boolean setFromCacheManager(String cacheName, String key, Object value) {
-        Cache cache = cacheManager.getCache(cacheName);
+    public Boolean setFromCacheManager(CacheEnum cacheEnum, String key, Object value) {
+        Cache cache = cacheManager.getCache(cacheEnum.name());
         if (Objects.nonNull(cache)) {
             cache.put(key, value);
             return true;
@@ -39,16 +40,16 @@ public class RedisUtils {
         return false;
     }
 
-    public Object getFromCacheManager(String cacheName, String key) {
-        Cache cache = cacheManager.getCache(cacheName);
+    public Object getFromCacheManager(CacheEnum cacheEnum, String key) {
+        Cache cache = cacheManager.getCache(cacheEnum.name());
         if (Objects.nonNull(cache) && Objects.nonNull(cache.get(key))) {
                 return cache.get(key).get();
         }
         return null;
     }
 
-    public <T> T getFromCacheManager(String cacheName, String key, Class<T> clazz) {
-        Cache cache = cacheManager.getCache(cacheName);
+    public <T> T getFromCacheManager(CacheEnum cacheEnum, String key, Class<T> clazz) {
+        Cache cache = cacheManager.getCache(cacheEnum.name());
         if (Objects.nonNull(cache)) {
             return cache.get(key, clazz);
         }

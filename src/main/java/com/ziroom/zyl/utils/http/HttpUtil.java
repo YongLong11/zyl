@@ -19,7 +19,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.springframework.data.redis.cache.RedisCacheManager;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

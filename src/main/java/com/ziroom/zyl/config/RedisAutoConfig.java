@@ -1,13 +1,18 @@
 package com.ziroom.zyl.config;
 
 import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import com.ziroom.zyl.common.constants.RedisConstants;
+import com.ziroom.zyl.common.enums.CacheEnum;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.caffeine.CaffeineCache;
+import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -21,7 +26,9 @@ import org.springframework.data.redis.serializer.*;
 
 import java.net.UnknownHostException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @ClassName：RedisAutoConfig
@@ -51,12 +58,12 @@ public class RedisAutoConfig {
         return template;
     }
 
-    @Bean(name = RedisConstants.CACHE_MANAGER_1)
+    @Bean(name = "redisCacheManager")
+    @Primary
     public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
-
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory);
-        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(10));
-        redisCacheConfiguration = redisCacheConfiguration.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(getKeySerializer()))
+        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(10))
+                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(getKeySerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(getValueSerializer()));
         return new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
 
