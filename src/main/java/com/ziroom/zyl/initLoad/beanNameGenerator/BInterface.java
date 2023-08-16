@@ -3,7 +3,7 @@ package com.ziroom.zyl.initLoad.beanNameGenerator;
 import org.springframework.stereotype.Service;
 
 @Service
-@BeanName(name = "AAA")
+@BeanName(name = "BBB")
 public class BInterface {
 
     public void send(){
