@@ -1,6 +1,7 @@
 package com.ziroom.zyl.pojo;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -10,7 +11,8 @@ import java.util.List;
  * @Author：zhangyl31@ziroom.com
  * @Data：2023/3/2 12:57
  **/
-@Data
+@Data(staticConstructor = "build")
+@Accessors(chain = true)
 public class OkrResp {
     private Long id;
 

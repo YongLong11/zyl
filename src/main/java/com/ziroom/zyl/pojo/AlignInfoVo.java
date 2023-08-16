@@ -1,6 +1,7 @@
 package com.ziroom.zyl.pojo;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * @ClassName：AlignInfoVo
@@ -8,10 +9,9 @@ import lombok.Data;
  * @Author：zhangyl31@ziroom.com
  * @Data：2023/3/2 12:58
  **/
-@Data
+@Data(staticConstructor = "build")
+@Accessors(chain = true, fluent = true)
 public class AlignInfoVo {
-
-
 
     private Long id;
 
