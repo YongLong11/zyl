@@ -8,6 +8,7 @@ public class UserEvent extends BaseEvent<User>{
     private User user;
     public UserEvent(User user){
         super(user);
+        this.user = user;
     }
 
     public void setData(User user){
