@@ -16,6 +16,7 @@ public abstract class BaseEvent<T> extends ApplicationEvent implements Serializa
 
     public BaseEvent(T data){
         super(data);
+        this.data = data;
     };
 
     void setData(T data){
