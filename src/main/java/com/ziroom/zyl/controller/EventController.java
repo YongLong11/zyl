@@ -32,7 +32,7 @@ public class EventController {
         User user = new User();
         user.setUserName("zhangyonglong");
         user.setAge("18");
-        BaseEvent<User> produceEvent = new UserEvent(user);
+        UserEvent produceEvent = new UserEvent(user);
         eventPublisher.publishEvent(produceEvent);
         return Resp.success();
     }

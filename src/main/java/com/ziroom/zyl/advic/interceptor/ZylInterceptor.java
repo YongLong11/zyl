@@ -25,7 +25,7 @@ public class ZylInterceptor implements HandlerInterceptor {
         log.info("请求的路由为-> {}", requestURL);
 
         Map<String, String[]> parameterMap = request.getParameterMap();
-        log.info("请求的参数为-> {}", JSONObject.toJSONString(parameterMap));
+//        log.info("请求的参数为-> {}", JSONObject.toJSONString(parameterMap));
         return true;
     }
 

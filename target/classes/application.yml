@@ -1,0 +1,50 @@
+server:
+  port: 8085
+
+spring:
+  datasource:
+    hikari:
+      zyl:
+        jdbc-url: jdbc:mysql://10.30.7.107:3306/zyl?characterEncoding=UTF8&useSSL=false
+        username: dev_jcpt
+        password: ziroomdb
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        initialSize: 5
+        minIdle: 5
+      okr:
+        jdbc-url: jdbc:mysql://10.30.7.107:3306/okr?characterEncoding=UTF8&useSSL=false
+        username: dev_jcpt
+        password: ziroomdb
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        initialSize: 5
+        minIdle: 5
+  redis:
+    host: 10.216.4.116
+    port: 6384
+    timeout: 5000
+outApi:
+  message:
+    url: http://message-api-new.kt.ziroom.com/
+    email:
+      token: 9UrbzbeDSgeDpxC4qf5Hmw
+    workwechat:
+      token: 607f97847e2166799c91c495
+      modelCode: WW-1618974644
+  ehr:
+    url: http://ehrnew.kt.ziroom.com/
+rocketmq:
+  namesrvAddr: 10.16.34.232:9876;10.16.34.233:9876
+  producer:
+    retryTimesWhenSendFailed: 3
+    maxMessageSize: 41943040
+    groupName: zyl_group
+    sendMsgTimeout: 3000
+  consumer:
+    consumeBatchMaxSize: 1
+    notify:
+      groupName: zyl_group
+      topics: zyl_topic
+      consumeThreadMax: 20
+      consumeThreadMin: 10
+
+

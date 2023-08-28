@@ -37,15 +37,7 @@ public class ConsumerConfig {
         consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
         consumer.setMessageModel(MessageModel.CLUSTERING);
         consumer.setConsumeMessageBatchMaxSize(batchMaxSize);
-        consumer.registerMessageListener((MessageListenerConcurrently) (megs, context) -> {
-            if (CollectionUtils.isEmpty(megs)) {
-                return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
-            }
-            megs.stream().forEach(meg -> {
-                System.out.println("被消费了" + new String(meg.getBody()));
-            });
-            return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
-        });
+        consumer.registerMessageListener(messageListenerConcurrently);
         try {
             consumer.subscribe(topic, "*");
             // 启动消费
@@ -59,4 +51,14 @@ public class ConsumerConfig {
         }
         return consumer;
     }
+
+    private final MessageListenerConcurrently messageListenerConcurrently = (megs, context) -> {
+        if (CollectionUtils.isEmpty(megs)) {
+            return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+        }
+        megs.stream().forEach(meg -> {
+            System.out.println("被消费了" + new String(meg.getBody()));
+        });
+        return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+    };
 }
