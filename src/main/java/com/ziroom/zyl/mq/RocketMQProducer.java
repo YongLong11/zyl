@@ -26,27 +26,27 @@ public class RocketMQProducer {
 
     public void sendTopic(Object msg) {
         try {
-            Message message = new Message();
-            message.setBody(JSON.toJSONBytes(msg));
-            message.setTopic(topic);
+            Message message = new Message(topic, JSON.toJSONBytes(msg));
 
-            defaultMQProducer.send(message, new SendCallback() {
-
-                @Override
-                public void onSuccess(SendResult sendResult) {
-                    log.info("sender.onSuccess mqMsgId:{}, sendStatus:{}, offsetId:{}",
-                            sendResult.getMsgId(), sendResult.getSendStatus(), sendResult.getOffsetMsgId());
-                }
-
-                @Override
-                public void onException(Throwable e) {
-                    log.error("sender.onException ERROR topic:{}", topic, e);
-                }
-
-            });
+            defaultMQProducer.send(message, defauteSendCallback());
 
         } catch (MQClientException | RemotingException | InterruptedException e) {
             log.error("sendMQ.sendTopic ERROR topic:{}", topic, e);
         }
+    }
+
+    private SendCallback defauteSendCallback(){
+        return new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("sender.onSuccess mqMsgId:{}, sendStatus:{}, offsetId:{}",
+                        sendResult.getMsgId(), sendResult.getSendStatus(), sendResult.getOffsetMsgId());
+            }
+
+            @Override
+            public void onException(Throwable e) {
+                log.error("sender.onException ERROR topic:{}", topic, e);
+            }
+        };
     }
 }
