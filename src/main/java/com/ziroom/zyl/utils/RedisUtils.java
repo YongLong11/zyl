@@ -75,6 +75,10 @@ public class RedisUtils {
         redisTemplate.opsForValue().set(key, value, timeout, TimeUnit.SECONDS);
     }
 
+    public void set(String key, Object value, long timeout, TimeUnit timeUnit) {
+        redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
+    }
+
     /**
      * 设置x小时的过期时间
      */
