@@ -1,14 +1,11 @@
 package com.ziroom.zyl.cache.listener;
 
 import com.ziroom.zyl.cache.cache.Cache;
-import com.ziroom.zyl.cache.cache.CaffeineCache;
 import com.ziroom.zyl.cache.constant.CacheConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.listener.KeyExpirationEventMessageListener;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
-
-import java.util.Objects;
 
 @Slf4j
 public class KeyExpirationListener extends KeyExpirationEventMessageListener {
@@ -25,6 +22,7 @@ public class KeyExpirationListener extends KeyExpirationEventMessageListener {
             log.info("【{}】key失效，执行删除", expiredKey);
             cache.delete(expiredKey);
         }
+        log.info("非本地缓存【{}】key失效", expiredKey);
     }
 
     public void setAnalysisKeyCache(Cache cache) {
