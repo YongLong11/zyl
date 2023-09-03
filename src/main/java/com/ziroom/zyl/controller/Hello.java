@@ -3,12 +3,15 @@ package com.ziroom.zyl.controller;
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
 import com.ziroom.zyl.aop.Retryable;
 import com.ziroom.zyl.cache.cache.PrefixKeyCache;
 import com.ziroom.zyl.common.Resp;
 import com.ziroom.zyl.common.constants.RedisConstants;
 import com.ziroom.zyl.common.enums.CacheEnum;
 import com.ziroom.zyl.common.exception.BusinessException;
+import com.ziroom.zyl.mybatisGenerate.dao.entity.Cycle;
+import com.ziroom.zyl.mybatisGenerate.service.CycleService;
 import com.ziroom.zyl.service.EasyExcelService;
 import com.ziroom.zyl.utils.RedisUtils;
 import lombok.AllArgsConstructor;
@@ -48,6 +51,18 @@ public class Hello {
 
     @Resource
     RedisUtils redisUtils;
+
+    @Resource
+    CycleService cycleService;
+
+    @GetMapping("/backup")
+    public Resp backup(){
+        List<Cycle> all = cycleService.getAll();
+        Lists.partition(all,  20).stream().forEach( cycles -> {
+            cycleService.insertBatch(cycles);
+        });
+        return Resp.success();
+    }
 
     @GetMapping("/redis/set")
     public Resp redisSet(){

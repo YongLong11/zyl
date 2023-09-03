@@ -1,4 +1,4 @@
-package com.ziroom.zyl.mybatisGenerate.mapper;
+package com.ziroom.zyl.mybatisGenerate.dao.mapper;
 
 import com.ziroom.zyl.mybatisGenerate.dao.entity.Cycle;
 import com.ziroom.zyl.mybatisGenerate.dao.entity.CycleCriteria;
@@ -13,6 +13,7 @@ public interface CycleMapper {
     int deleteByPrimaryKey(Long id);
 
     int insert(Cycle record);
+    int insertBatch(List<Cycle> cycles);
 
     int insertSelective(Cycle record);
 

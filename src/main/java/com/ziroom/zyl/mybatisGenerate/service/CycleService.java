@@ -7,4 +7,6 @@ import java.util.List;
 public interface CycleService {
 
     List<Cycle> getAll();
+    int insertBatch(List<Cycle> cycles);
+
 }
