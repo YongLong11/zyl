@@ -28,13 +28,13 @@ public class DataSourceAspect {
             // 使用反射获取目标类中指定方法名和参数类型的方法对象
             Method m = classz.getMethod(method, parameterTypes);
             // 设置默认的数据源名称
-            String dataSource = DataSourceConstant.ZYL;
+            String dataSource = DatasourceEnum.ZYL.name();
             // 判断方法是否被@TargetDataSource 注解标记。
             if (m.isAnnotationPresent(TargetDataSource.class)) {
                 // 通过getAnnotation()方法获取方法上的@TargetDataSource 注解对象。
                 TargetDataSource td = m.getAnnotation(TargetDataSource.class);
                 // 获取注解对象中设置的数据源名称
-                dataSource = td.value();
+                dataSource = td.value().name();
             }
             // 将获取到的数据源名称设置到当前线程的上下文中
             DynamicDataSourceHolder.setDataSource(dataSource);

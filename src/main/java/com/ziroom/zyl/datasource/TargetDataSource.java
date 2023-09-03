@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD, ElementType.TYPE})
 public @interface TargetDataSource {
-    String value() default  DataSourceConstant.ZYL;
+    DatasourceEnum value() default  DatasourceEnum.ZYL;
 }

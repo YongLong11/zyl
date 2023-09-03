@@ -38,11 +38,11 @@ public class MybatisPlusGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/zhangyl31?characterEncoding=UTF-8");
+        dsc.setUrl("jdbc:mysql://10.30.7.107:3306/zyl?characterEncoding=UTF-8");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
-        dsc.setUsername("root");
-        dsc.setPassword("root");
+        dsc.setUsername("dev_jcpt");
+        dsc.setPassword("ziroomdb");
 
         mpg.setDataSource(dsc);
 
@@ -51,7 +51,7 @@ public class MybatisPlusGenerator {
         // 包配置
         PackageConfig pc = new PackageConfig();
         pc.setModuleName(null)// 生成的controller路径映射为一个"/",覆盖默认的"//"
-                .setParent("com.ziroom.zyl")// 生成controller，service，xml并设置路径。
+                .setParent("com.ziroom.zyl.mybatisPlus")// 生成controller，service，xml并设置路径。
                 .setEntity("entity")
                 .setMapper("mapper")
                 .setService("service")
@@ -123,7 +123,15 @@ public class MybatisPlusGenerator {
 //        strategy.setSuperControllerClass("你自己的父类控制器,没有就不用设置!");
         // 写于父类中的公共字段
 //        strategy.setSuperEntityColumns("id");
-        strategy.setInclude("user");
+        strategy.setInclude("audit_log", "cycle", "confidential_user", "data_dictionary",
+                "data_report_import_user", "department_permission", "down_history",
+                "feature_switch", "key_instruction", "key_result", "latest_objective",
+                "mention", "notice_dept", "objective", "objective_snapshot",
+                "objective_type", "okr_example", "okr_example_content",
+                "okr_extra_attributes","okr_record", "okr_score",
+                "okr_status", "okr_target", "okr_target_result", "operate_person_detail",
+                "operate_team_detail", "virtual_dept_mapping"
+                );
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
         mpg.setStrategy(strategy);

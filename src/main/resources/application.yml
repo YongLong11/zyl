@@ -47,4 +47,6 @@ rocketmq:
       consumeThreadMax: 20
       consumeThreadMin: 10
 
-
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启sql日志

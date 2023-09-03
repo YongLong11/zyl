@@ -19,7 +19,7 @@ public class DataSourceConfig {
     /**
      * @return
      */
-    @Bean(name = DataSourceConstant.ZYL)
+    @Bean(name = "ZYL")
     @ConfigurationProperties(prefix = "spring.datasource.hikari.zyl")
     public DataSource zylDataSource() {
 //        return DataSourceBuilder.create().type(HikariDataSource.class).build();
@@ -29,7 +29,7 @@ public class DataSourceConfig {
     /**
      * @return
      */
-    @Bean(name = DataSourceConstant.OKR)
+    @Bean(name = "OKR")
     @ConfigurationProperties(prefix = "spring.datasource.hikari.okr")
     public DataSource okrDataSource() {
 //        return DataSourceBuilder.create().type(HikariDataSource.class).build();
@@ -46,8 +46,8 @@ public class DataSourceConfig {
         DynamicDataSource dynamicDataSource = new DynamicDataSource();
         dynamicDataSource.setDefaultTargetDataSource(zylDataSource());
         Map<Object, Object> dataSourceMap = new HashMap<>();
-        dataSourceMap.put(DataSourceConstant.OKR, okrDataSource());
-        dataSourceMap.put(DataSourceConstant.ZYL, zylDataSource());
+        dataSourceMap.put(DatasourceEnum.OKR.name(), okrDataSource());
+        dataSourceMap.put(DatasourceEnum.ZYL.name(), zylDataSource());
         dynamicDataSource.setTargetDataSources(dataSourceMap);
         return dynamicDataSource;
     }

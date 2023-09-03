@@ -2,7 +2,6 @@ package com.ziroom.zyl.service.mybatisGenerate;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ziroom.zyl.mybatisGenerate.dao.entity.User;
-import com.ziroom.zyl.mybatisGenerate.service.MybatisGenerateUserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
