@@ -58,7 +58,7 @@
         <!-- 主要是配置表生成entity，mapper，xml -->
         <!-- 只需要配置表名和主键配置 -->
 
-        <table tableName="cycle" enableCountByExample="true" enableUpdateByExample="true"
+        <table tableName="virtual_dept_mapping" enableCountByExample="true" enableUpdateByExample="true"
                enableSelectByExample="true"
                selectByExampleQueryId="true">
             <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
