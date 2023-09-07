@@ -9,22 +9,263 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Arithmetic {
-    public static void main(String[] args) {
-        String str = "civilwartestingwhetherthatnaptionoranynartionsoconceivedandsodedicatedcanlongendureWeareqmetonagreatbattlefiemldoftzhatwarWehavecometodedicpateaportionofthatfieldasafinalrestingplaceforthosewhoheregavetheirlivesthatthatnationmightliveItisaltogetherfangandproperthatweshoulddothisButinalargersensewecannotdedicatewecannotconsecratewecannothallowthisgroundThebravelmenlivinganddeadwhostruggledherehaveconsecrateditfaraboveourpoorponwertoaddordetractTgheworldadswfilllittlenotlenorlongrememberwhatwesayherebutitcanneverforgetwhattheydidhereItisforusthelivingrathertobededicatedheretotheulnfinishedworkwhichtheywhofoughtherehavethusfarsonoblyadvancedItisratherforustobeherededicatedtothegreattdafskremainingbeforeusthatfromthesehonoreddeadwetakeincreaseddevotiontothatcauseforwhichtheygavethelastpfullmeasureofdevotionthatweherehighlyresolvethatthesedeadshallnothavediedinvainthatthisnationunsderGodshallhaveanewbirthoffreedomandthatgovernmentofthepeoplebythepeopleforthepeopleshallnotperishfromtheearth";
-        System.out.println(longestPalindrome(str));
+    public static void main(String[] args) throws Throwable{
+        System.out.println(generateParenthesis(3));
+    }
+
+    // 数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
+    //输入：n = 3
+    //输出：["((()))","(()())","(())()","()(())","()()()"]
+    //示例 2：
+    //输入：n = 1
+    //输出：["()"]
+    // https://leetcode.cn/problems/generate-parentheses/solutions/192912/gua-hao-sheng-cheng-by-leetcode-solution/
+    // 必然的前提：左括号的数量一定大于等于右括号
+    public static List<String> generateParenthesis(int n) {
+        List<String> ret = new ArrayList<>();
+
+        if( n < 0 ){
+            return ret;
+        }
+        generateParenthesis("", n, n, ret);
+        return ret;
+    }
+
+    private static void generateParenthesis(String str, int left, int right, List<String> ret){
+        if(left == 0 && right == 0 ){
+            ret.add(str);
+            return;
+        }
+        if(left == right){
+            //剩余左右括号数相等，下一个只能用左括号
+            generateParenthesis(str+"(",left-1,right, ret);
+        }else if(left < right){
+            //剩余左括号小于右括号，下一个可以用左括号也可以用右括号
+            if(left > 0){
+                generateParenthesis(str+"(",left-1,right, ret);
+            }
+            generateParenthesis(str+")",left,right-1, ret);
+        }
+    }
+
+
+    // 罗马数字包含以下七种字符： I， V， X， L，C，D 和 M。
+    //字符          数值
+    //I             1
+    //V             5
+    //X             10
+    //L             50
+    //C             100
+    //D             500
+    //M             1000
+    //例如， 罗马数字 2 写做 II ，即为两个并列的 1。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。
+    //通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：
+    //I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。
+    //X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。
+    //C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。
+    //给你一个整数，将其转为罗马数字。
+    // https://leetcode.cn/problems/integer-to-roman/
+    // 下面两种方法都是解决数据转罗马
+    private static String intToRoman(int num) {
+        if(num <= 0 || num >= Integer.MAX_VALUE){
+            return "";
+        }
+        Map<String, List<Integer>> levelMap = getMap();
+        StringBuilder stringBuilder = new StringBuilder();
+        while (num > 0){
+            String luoMa = getLuoMa(num);
+            stringBuilder.append(luoMa);
+            Integer i = levelMap.get(luoMa).get(0);
+            num = num - i;
+        }
+        return stringBuilder.toString();
+    }
+    private static Map<String, List<Integer>> getMap(){
+
+        Map<String, List<Integer>> levelMap = new LinkedHashMap<>();
+        levelMap.put("I", Arrays.asList(1, 4));
+        levelMap.put("V", Arrays.asList(5, 9));
+        levelMap.put("X", Arrays.asList(10, 40));
+        levelMap.put("L", Arrays.asList(50, 90));
+        levelMap.put("C", Arrays.asList(100, 400));
+        levelMap.put("D", Arrays.asList(500, 100));
+        levelMap.put("M", Arrays.asList(1000, Integer.MAX_VALUE));
+        levelMap.put("IV", Arrays.asList(4, 5));
+        levelMap.put("IX", Arrays.asList(9, 10));
+        levelMap.put("XL", Arrays.asList(40, 50));
+        levelMap.put("XC", Arrays.asList(90, 100));
+        levelMap.put("CD", Arrays.asList(400, 500));
+        levelMap.put("CM", Arrays.asList(900, 1000));
+        return levelMap;
+    }
+    private static String getLuoMa(Integer num) {
+        Map<String, List<Integer>> levelMap = getMap();
+        // 实际使用，左闭右开
+        return levelMap.entrySet()
+                .stream()
+                .filter(entry -> {
+                    List<Integer> value = entry.getValue();
+                    int min = value.get(0);
+                    int max = value.get(1);
+                    if (num >= min && num < max) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                })
+                .findFirst()
+                .get()
+                .getKey();
+    }
+//    public static String intToRoman(int num) {
+//        int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+//        String[] symbols = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+//
+//        StringBuffer roman = new StringBuffer();
+//        for (int i = 0; i < values.length; ++i) {
+//            int value = values[i];
+//            String symbol = symbols[i];
+//            while (num >= value) {
+//                num -= value;
+//                roman.append(symbol);
+//            }
+//            if (num == 0) {
+//                break;
+//            }
+//        }
+//        return roman.toString();
+//    }
+
+    //罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。
+    //字符          数值
+    //I             1
+    //V             5
+    //X             10
+    //L             50
+    //C             100
+    //D             500
+    //M             1000
+    //例如， 罗马数字 2 写做 II ，即为两个并列的 1 。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。
+    //通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，
+    // 例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。
+    // 同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：
+    //I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。
+    //X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。
+    //C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。
+    //给定一个罗马数字，将其转换成整数。
+    public static int romanToInt(String s) {
+        int sum = 0;
+        int preNum = getValue(s.charAt(0));
+        for(int i = 1;i < s.length(); i ++) {
+            int num = getValue(s.charAt(i));
+            if(preNum < num) {
+                sum -= preNum;
+            } else {
+                sum += preNum;
+            }
+            preNum = num;
+        }
+        sum += preNum;
+        return sum;
+    }
+
+    private static int getValue(char ch) {
+        switch(ch) {
+            case 'I': return 1;
+            case 'V': return 5;
+            case 'X': return 10;
+            case 'L': return 50;
+            case 'C': return 100;
+            case 'D': return 500;
+            case 'M': return 1000;
+            default: return 0;
+        }
+    }
+
+
+    // 最长公共前缀
+    // https://leetcode.cn/problems/longest-common-prefix/
+    public static String longestCommonPrefix(String[] strs) {
+        if (strs == null || strs.length == 0) {
+            return "";
+        }
+        int length = strs[0].length();
+        int count = strs.length;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            char c = strs[0].charAt(i);
+            stringBuilder.append(c);
+            for (int j = 1; j < count; j++) {
+                try {
+                    if(!strs[j].startsWith(stringBuilder.toString())){
+                        return stringBuilder.substring(0, stringBuilder.length() - 2);
+                    }
+                }catch (ArrayIndexOutOfBoundsException e){
+                    return stringBuilder.substring(0, stringBuilder.length() - 2);
+                }
+
+            }
+        }
+        return strs[0];
+    }
+
+
+    // https://leetcode.cn/problems/reverse-integer/solutions/211865/tu-jie-7-zheng-shu-fan-zhuan-by-wang_ni_ma/
+    //给你一个 32 位的有符号整数 x ，返回将 x 中的数字部分反转后的结果。
+    //如果反转后整数超过 32 位的有符号整数的范围 [−231,  231 − 1] ，就返回 0。
+    //假设环境不允许存储 64 位整数（有符号或无符号）。
+    public static int reverse(int x) {
+        if(x == 0){
+            return 0;
+        }
+        String s = String.valueOf(x);
+        StringBuilder stringBuilder = new StringBuilder();
+        if(s.startsWith("-")) {
+            stringBuilder.append("-");
+        }
+        String[] split = s.split("");
+        int left = 0, right = split.length - 1;
+        while (left < right){
+            if(stringBuilder.toString().startsWith("-")){
+                continue;
+            }
+            stringBuilder.insert(0, split[left]);
+            left ++;
+        }
+        int ret = 0;
+        try {
+            ret = Integer.parseInt(stringBuilder.toString());
+        }catch (NumberFormatException e){
+            return 0;
+        }
+        return ret;
     }
 
     //给你一个整数数组 nums ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
     //子数组 是数组中的一个连续部分。
     //https://leetcode.cn/problems/maximum-subarray/
     public int maxSubArray(int[] nums) {
-        int len = nums.length;
-        int sum = 0;
-        for (int i = 0; i < len; i++)
-            for (int q = i + 1; q <= len; q++) {
 
+        int len = nums.length;
+        // dp[i] 表示：以 nums[i] 结尾的连续子数组的最大和
+        int[] dp = new int[len];
+        dp[0] = nums[0];
+
+        for (int i = 1; i < len; i++) {
+            if (dp[i - 1] > 0) {
+                dp[i] = dp[i - 1] + nums[i];
+            } else {
+                dp[i] = nums[i];
             }
-        return -1;
+        }
+
+        // 也可以在上面遍历的同时求出 res 的最大值，这里我们为了语义清晰分开写，大家可以自行选择
+        int res = dp[0];
+        for (int i = 1; i < len; i++) {
+            res = Math.max(res, dp[i]);
+        }
+        return res;
+
     }
 
 
