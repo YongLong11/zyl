@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
  * @Data：2023/3/2 12:58
  **/
 @Data(staticConstructor = "build")
-@Accessors(chain = true, fluent = true)
+@Accessors(chain = true)
 public class AlignInfoVo {
 
     private Long id;

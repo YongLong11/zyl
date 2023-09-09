@@ -1,17 +1,73 @@
 package com.ziroom.zyl.leetcode;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.util.Strings;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Arithmetic {
     public static void main(String[] args) throws Throwable{
-        System.out.println(generateParenthesis(3));
+        System.out.println(reverse(100));
     }
+
+
+    //给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
+    //
+    //有效字符串需满足：
+    //
+    //左括号必须用相同类型的右括号闭合。
+    //左括号必须以正确的顺序闭合。
+    //每个右括号都有一个对应的相同类型的左括号。
+    // https://leetcode.cn/problems/valid-parentheses/
+    public static boolean isValid(String s) {
+        List<String> leftList = Arrays.asList("{", "[", "(");
+        List<String> rightList = Arrays.asList("}", "]", ")");
+
+        if((s.split("").length % 2) != 0){
+            return false;
+        }
+        try {
+            Stack<String> leftStack = new Stack<>();
+            for (String string : s.split("")) {
+                if(leftList.contains(string)){
+                    leftStack.push(string);
+                }else {
+                    String peek = leftStack.peek();
+                    if(Objects.equals(peek, findRight.apply(string))){
+                        leftStack.pop();
+                    }else if(rightList.contains(string)){
+                        return false;
+                    }
+                }
+            }
+            return leftStack.empty();
+        }catch (Exception e){
+            return false;
+        }
+    }
+    private static final Function<String, String> findRight = iterm -> {
+        String ret = "" ;
+        switch (iterm){
+            case "}":
+                ret = "{";
+                break;
+            case "]":
+                ret = "[";
+                break;
+            case ")":
+                ret = "(";
+                break;
+        }
+        return ret;
+    };
+
 
     // 数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
     //输入：n = 3
@@ -218,27 +274,55 @@ public class Arithmetic {
         if(x == 0){
             return 0;
         }
-        String s = String.valueOf(x);
-        StringBuilder stringBuilder = new StringBuilder();
-        if(s.startsWith("-")) {
-            stringBuilder.append("-");
+        boolean isUp = true;
+        String str = String.valueOf(x);
+        if(str.startsWith("-")){
+            isUp = false;
+            str = str.substring(1, str.length());
         }
-        String[] split = s.split("");
-        int left = 0, right = split.length - 1;
-        while (left < right){
-            if(stringBuilder.toString().startsWith("-")){
-                continue;
-            }
-            stringBuilder.insert(0, split[left]);
-            left ++;
+        String[] split1 = str.split("");
+        int left = 0 ,right = split1.length - 1;
+        for (int i = 0; left < right; i++) {
+            String temp = split1[left];
+            split1[left] = split1[right];
+            split1[right] = temp;
+            left++;
+            right--;
         }
-        int ret = 0;
-        try {
-            ret = Integer.parseInt(stringBuilder.toString());
-        }catch (NumberFormatException e){
-            return 0;
+        // 先转为 long ，可以消除字符串前面的 0
+        String collect = String.join("", split1);
+        long p = Long.parseLong(collect);
+        collect = p + "";
+        if(!isUp){
+            collect = "-" + collect;
         }
-        return ret;
+        long l = Long.parseLong(collect);
+        return (l > Integer.MAX_VALUE || l < Integer.MIN_VALUE) ? 0 : (int) l;
+
+//        if(x == 0){
+//            return 0;
+//        }
+//        String s = String.valueOf(x);
+//        StringBuilder stringBuilder = new StringBuilder();
+//        if(s.startsWith("-")) {
+//            stringBuilder.append("-");
+//        }
+//        String[] split = s.split("");
+//        int left = 0, right = split.length - 1;
+//        while (left < right){
+//            if(stringBuilder.toString().startsWith("-")){
+//                continue;
+//            }
+//            stringBuilder.insert(0, split[left]);
+//            left ++;
+//        }
+//        int ret = 0;
+//        try {
+//            ret = Integer.parseInt(stringBuilder.toString());
+//        }catch (NumberFormatException e){
+//            return 0;
+//        }
+//        return ret;
     }
 
     //给你一个整数数组 nums ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。

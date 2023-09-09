@@ -1,10 +1,12 @@
 package com.ziroom.zyl.aop;
 
+import javax.validation.Constraint;
 import java.lang.annotation.*;
 
-@Target(value = {ElementType.METHOD, ElementType.TYPE})
+@Target(value = {ElementType.METHOD, ElementType.TYPE, ElementType.FIELD, ElementType.PARAMETER})
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = LimiterConstraintValidator.class)
 public @interface Limiter {
 
     /*
