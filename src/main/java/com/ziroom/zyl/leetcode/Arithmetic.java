@@ -1,21 +1,115 @@
 package com.ziroom.zyl.leetcode;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.util.Strings;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Arithmetic {
-    public static void main(String[] args) throws Throwable{
-        System.out.println(reverse(100));
+    static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(5, 10, 0L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+
+    public static void main(String[] args) throws Throwable {
+        System.out.println(convert("PAYPALISHIRING", 3));
+
     }
+
+    // 将一个给定字符串 s 根据给定的行数 numRows ，以从上往下、从左到右进行 Z 字形排列。
+    //比如输入字符串为 "PAYPALISHIRING" 行数为 3 时，排列如下：
+    //P   A   H   N
+    //A P L S I I G
+    //Y   I   R
+    //之后，你的输出需要从左往右逐行读取，产生出一个新的字符串，比如："PAHNAPLSIIGYIR"。
+    public static String convert(String s, int numRows) {
+        if(numRows < 2) return s;
+        List<StringBuilder> rows = new ArrayList<StringBuilder>();
+        for(int i = 0; i < numRows; i++) rows.add(new StringBuilder());
+        int i = 0, flag = -1;
+        for(char c : s.toCharArray()) {
+            rows.get(i).append(c);
+            if(i == 0 || i == numRows -1) {
+                flag = - flag;
+            }
+            i += flag;
+        }
+        StringBuilder res = new StringBuilder();
+        for(StringBuilder row : rows) res.append(row);
+        return res.toString();
+    }
+
+
+
+
+
+    //一只青蛙一次可以跳上1级台阶，也可以跳上2级台阶。求该青蛙跳上一个 n 级的台阶总共有多少种跳法。
+    //答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+    // https://leetcode.cn/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/
+    public static int numWays(int n) {
+        int first = 1;
+        int second = 1;
+        int third = 0;
+        if(n < 2)
+        {
+            return 1;
+        }
+        else
+        {
+            for(int i = 2; i <= n; i++)
+            {
+                third = (first + second) % 1000000007;
+                first = second;
+                second = third;
+            }
+            return third;
+        }
+
+    }
+
+
+    // 给你一个由 n 个整数组成的数组 nums ，和一个目标值 target 。
+    // 请你找出并返回满足下述全部条件且不重复的四元组 [nums[a], nums[b], nums[c], nums[d]] （若两个四元组元素一一对应，则认为两个四元组重复）
+    // https://leetcode.cn/problems/4sum/
+    // 试了下，功能应该是没问题的，性能不太好
+    public static List<List<Integer>> fourSum(int[] nums, int target) {
+        List<Integer> collect = Arrays.stream(nums).boxed().collect(Collectors.toList());
+        List<List<Integer>> generatedCombinations = generateCombinations(collect, 4);
+        return generatedCombinations.stream()
+                .filter(lists -> lists.stream().mapToInt(Integer::intValue).sum() == target)
+                .peek(lists -> lists.sort(Integer::compareTo))
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    // 获取 list 中指定长度的随机组合
+    private static List<List<Integer>> generateCombinations(List<Integer> list, int k) {
+        List<List<Integer>> combinations = new ArrayList<>();
+        generateCombinations(list, new ArrayList<>(), 0, k, combinations);
+        return combinations;
+    }
+    private static void generateCombinations(List<Integer> list, List<Integer> combination, int index, int k, List<List<Integer>> result) {
+        // 终止条件：当前组合的大小等于指定的元素个数
+        if (combination.size() == k) {
+            result.add(new ArrayList<>(combination));
+            return;
+        }
+        for (int i = index; i < list.size(); i++) {
+                int num = list.get(i);
+                // 将选择的元素添加到当前组合中
+                combination.add(num);
+                // 递归调用函数，选择下一个元素
+                generateCombinations(list, combination, i + 1, k, result);
+                // 将选择的元素从当前组合中移除
+                combination.remove(combination.size() - 1);
+        }
+    }
+
 
 
     //给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
@@ -30,31 +124,32 @@ public class Arithmetic {
         List<String> leftList = Arrays.asList("{", "[", "(");
         List<String> rightList = Arrays.asList("}", "]", ")");
 
-        if((s.split("").length % 2) != 0){
+        if ((s.split("").length % 2) != 0) {
             return false;
         }
         try {
             Stack<String> leftStack = new Stack<>();
             for (String string : s.split("")) {
-                if(leftList.contains(string)){
+                if (leftList.contains(string)) {
                     leftStack.push(string);
-                }else {
+                } else {
                     String peek = leftStack.peek();
-                    if(Objects.equals(peek, findRight.apply(string))){
+                    if (Objects.equals(peek, findRight.apply(string))) {
                         leftStack.pop();
-                    }else if(rightList.contains(string)){
+                    } else if (rightList.contains(string)) {
                         return false;
                     }
                 }
             }
             return leftStack.empty();
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
+
     private static final Function<String, String> findRight = iterm -> {
-        String ret = "" ;
-        switch (iterm){
+        String ret = "";
+        switch (iterm) {
             case "}":
                 ret = "{";
                 break;
@@ -80,27 +175,27 @@ public class Arithmetic {
     public static List<String> generateParenthesis(int n) {
         List<String> ret = new ArrayList<>();
 
-        if( n < 0 ){
+        if (n < 0) {
             return ret;
         }
         generateParenthesis("", n, n, ret);
         return ret;
     }
 
-    private static void generateParenthesis(String str, int left, int right, List<String> ret){
-        if(left == 0 && right == 0 ){
+    private static void generateParenthesis(String str, int left, int right, List<String> ret) {
+        if (left == 0 && right == 0) {
             ret.add(str);
             return;
         }
-        if(left == right){
+        if (left == right) {
             //剩余左右括号数相等，下一个只能用左括号
-            generateParenthesis(str+"(",left-1,right, ret);
-        }else if(left < right){
+            generateParenthesis(str + "(", left - 1, right, ret);
+        } else if (left < right) {
             //剩余左括号小于右括号，下一个可以用左括号也可以用右括号
-            if(left > 0){
-                generateParenthesis(str+"(",left-1,right, ret);
+            if (left > 0) {
+                generateParenthesis(str + "(", left - 1, right, ret);
             }
-            generateParenthesis(str+")",left,right-1, ret);
+            generateParenthesis(str + ")", left, right - 1, ret);
         }
     }
 
@@ -123,21 +218,21 @@ public class Arithmetic {
     // https://leetcode.cn/problems/integer-to-roman/
     // 下面两种方法都是解决数据转罗马
     private static String intToRoman(int num) {
-        if(num <= 0 || num >= Integer.MAX_VALUE){
+        if (num <= 0 || num >= Integer.MAX_VALUE) {
             return "";
         }
         Map<String, List<Integer>> levelMap = getMap();
-        StringBuilder stringBuilder = new StringBuilder();
-        while (num > 0){
+        String result = "";
+        while (num > 0) {
             String luoMa = getLuoMa(num);
-            stringBuilder.append(luoMa);
+            result = result + luoMa;
             Integer i = levelMap.get(luoMa).get(0);
             num = num - i;
         }
-        return stringBuilder.toString();
+        return result;
     }
-    private static Map<String, List<Integer>> getMap(){
 
+    private static Map<String, List<Integer>> getMap() {
         Map<String, List<Integer>> levelMap = new LinkedHashMap<>();
         levelMap.put("I", Arrays.asList(1, 4));
         levelMap.put("V", Arrays.asList(5, 9));
@@ -154,6 +249,7 @@ public class Arithmetic {
         levelMap.put("CM", Arrays.asList(900, 1000));
         return levelMap;
     }
+
     private static String getLuoMa(Integer num) {
         Map<String, List<Integer>> levelMap = getMap();
         // 实际使用，左闭右开
@@ -212,9 +308,9 @@ public class Arithmetic {
     public static int romanToInt(String s) {
         int sum = 0;
         int preNum = getValue(s.charAt(0));
-        for(int i = 1;i < s.length(); i ++) {
+        for (int i = 1; i < s.length(); i++) {
             int num = getValue(s.charAt(i));
-            if(preNum < num) {
+            if (preNum < num) {
                 sum -= preNum;
             } else {
                 sum += preNum;
@@ -226,15 +322,23 @@ public class Arithmetic {
     }
 
     private static int getValue(char ch) {
-        switch(ch) {
-            case 'I': return 1;
-            case 'V': return 5;
-            case 'X': return 10;
-            case 'L': return 50;
-            case 'C': return 100;
-            case 'D': return 500;
-            case 'M': return 1000;
-            default: return 0;
+        switch (ch) {
+            case 'I':
+                return 1;
+            case 'V':
+                return 5;
+            case 'X':
+                return 10;
+            case 'L':
+                return 50;
+            case 'C':
+                return 100;
+            case 'D':
+                return 500;
+            case 'M':
+                return 1000;
+            default:
+                return 0;
         }
     }
 
@@ -253,10 +357,10 @@ public class Arithmetic {
             stringBuilder.append(c);
             for (int j = 1; j < count; j++) {
                 try {
-                    if(!strs[j].startsWith(stringBuilder.toString())){
+                    if (!strs[j].startsWith(stringBuilder.toString())) {
                         return stringBuilder.substring(0, stringBuilder.length() - 2);
                     }
-                }catch (ArrayIndexOutOfBoundsException e){
+                } catch (ArrayIndexOutOfBoundsException e) {
                     return stringBuilder.substring(0, stringBuilder.length() - 2);
                 }
 
@@ -271,17 +375,17 @@ public class Arithmetic {
     //如果反转后整数超过 32 位的有符号整数的范围 [−231,  231 − 1] ，就返回 0。
     //假设环境不允许存储 64 位整数（有符号或无符号）。
     public static int reverse(int x) {
-        if(x == 0){
+        if (x == 0) {
             return 0;
         }
         boolean isUp = true;
         String str = String.valueOf(x);
-        if(str.startsWith("-")){
+        if (str.startsWith("-")) {
             isUp = false;
             str = str.substring(1, str.length());
         }
         String[] split1 = str.split("");
-        int left = 0 ,right = split1.length - 1;
+        int left = 0, right = split1.length - 1;
         for (int i = 0; left < right; i++) {
             String temp = split1[left];
             split1[left] = split1[right];
@@ -293,7 +397,7 @@ public class Arithmetic {
         String collect = String.join("", split1);
         long p = Long.parseLong(collect);
         collect = p + "";
-        if(!isUp){
+        if (!isUp) {
             collect = "-" + collect;
         }
         long l = Long.parseLong(collect);
@@ -352,7 +456,6 @@ public class Arithmetic {
 
     }
 
-
     //给你一个字符串 s，找到 s 中最长的回文子串。
     //如果字符串的反序与原始字符串相同，则该字符串称为回文字符串。
     // https://leetcode.cn/problems/longest-palindromic-substring/
@@ -371,14 +474,15 @@ public class Arithmetic {
         return ans;
 
     }
-    private static boolean isPalindrome(String s){
-        if(s.length() == 0){
+
+    private static boolean isPalindrome(String s) {
+        if (s.length() == 0) {
             return true;
         }
         String[] split = s.split("");
         int start = 0, end = split.length - 1;
-        for (int i = 0; start <= end ; i++) {
-            if(!split[start].equalsIgnoreCase(split[end])){
+        for (int i = 0; start <= end; i++) {
+            if (!split[start].equalsIgnoreCase(split[end])) {
                 return false;
             }
             start++;
@@ -386,7 +490,6 @@ public class Arithmetic {
         }
         return true;
     }
-
 
 
     //给定一个整数数组 nums，将数组中的元素向右轮转 k 个位置，其中 k 是非负数。
@@ -400,10 +503,10 @@ public class Arithmetic {
         HashMap<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < length; i++) {
             // 右移有两种情况，1、未超过数组长度，2、超过数组长度
-            if( (i + k) < length){
+            if ((i + k) < length) {
                 ret.set(i + k, nums[i]);
 //                map.put(i + k, nums[i]);
-            }else {
+            } else {
                 ret.set(i + k - length, nums[i]);
 //                map.put(i + k - length, nums[i]);
             }
@@ -430,12 +533,13 @@ public class Arithmetic {
             ret.addAll(area2);
             end = end - 1;
         }
-        if(ret.isEmpty()){
+        if (ret.isEmpty()) {
             return 0;
         }
         return ret.stream().max(Integer::compareTo).get();
     }
-    private static List<Integer> getArea(int start , int end, List<Integer> collect){
+
+    private static List<Integer> getArea(int start, int end, List<Integer> collect) {
         int left = collect.get(start);
         int right = collect.get(end);
         int min = Math.min(left, right);
@@ -447,25 +551,25 @@ public class Arithmetic {
     //给定一个字符串 s ，请你找出其中不含有重复字符的 最长子串 的长度。
     public static int lengthOfLongestSubstring(String s) {
         String[] split = s.split("");
-        if(s.equals("")){
+        if (s.equals("")) {
             return 0;
         }
-        if(split.length == 1){
+        if (split.length == 1) {
             return 1;
         }
         List<Integer> resultLength = new ArrayList<>();
         for (int i = 0; i < split.length; i++) {
             Set<String> strings = new HashSet<>();
-            for (int q = i; q < split.length; q++){
+            for (int q = i; q < split.length; q++) {
                 int size = strings.size();
                 strings.add(split[q]);
-                if (size == strings.size() || strings.size() == split.length){
+                if (size == strings.size() || strings.size() == split.length) {
                     resultLength.add(strings.size());
                     break;
                 }
             }
         }
-        if(resultLength.isEmpty()){
+        if (resultLength.isEmpty()) {
             return -1;
         }
         resultLength.sort(Comparator.reverseOrder());
@@ -482,9 +586,9 @@ public class Arithmetic {
             // 当前值
             int num = nums[i];
             int other = target - num;
-            if(map.containsKey(other)){
+            if (map.containsKey(other)) {
                 return new int[]{map.get(other), i};
-            }else {
+            } else {
                 map.put(num, i);
             }
         }
@@ -499,7 +603,7 @@ public class Arithmetic {
         long i = BigDecimal.valueOf(length).divide(BigDecimal.valueOf(2), RoundingMode.HALF_UP).longValue();
         Map<Integer, Long> collect = Arrays.stream(nums).boxed().collect(Collectors.groupingBy(a -> a, Collectors.counting()));
         for (Map.Entry<Integer, Long> entry : collect.entrySet()) {
-            if(entry.getValue() > i){
+            if (entry.getValue() > i) {
                 return entry.getKey();
             }
         }
@@ -527,6 +631,7 @@ public class Arithmetic {
         }
         return j + 1;
     }
+
     void swap(int[] nums, int i, int j) {
         int tmp = nums[i];
         nums[i] = nums[j];
@@ -536,11 +641,11 @@ public class Arithmetic {
 
     // 合并两个有序数据
     public void merge(int[] nums1, int m, int[] nums2, int n) {
-         nums1 = Stream.concat(Arrays.stream(nums1).boxed()
-                         , Arrays.stream(nums2).boxed())
+        nums1 = Stream.concat(Arrays.stream(nums1).boxed()
+                        , Arrays.stream(nums2).boxed())
                 .sorted(Comparator.reverseOrder())
                 .filter(num -> Objects.equals(0, num))
-                 .mapToInt(a -> a)
-                 .toArray();
+                .mapToInt(a -> a)
+                .toArray();
     }
 }
