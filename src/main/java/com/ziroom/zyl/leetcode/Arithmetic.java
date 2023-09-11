@@ -10,6 +10,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -17,10 +19,53 @@ public class Arithmetic {
     static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(5, 10, 0L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
 
     public static void main(String[] args) throws Throwable {
-        System.out.println(convert("PAYPALISHIRING", 3));
+        int[] nums = new int[]{2,3,10,5,7,8,9};
+        System.out.println(maxArea(nums));
 
     }
 
+    // 给你一个整数数组 nums ，判断是否存在三元组 [nums[i], nums[j], nums[k]] 满足 i != j、i != k 且 j != k ，同时还满足 nums[i] + nums[j] + nums[k] == 0 。请
+    //你返回所有和为 0 且不重复的三元组。
+    //注意：答案中不可以包含重复的三元组。
+    // https://leetcode.cn/problems/3sum/
+    // 道理同foursum，估计是性能不好
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> lists = generateCombinations(Arrays.stream(nums).boxed().collect(Collectors.toList()), 3);
+        return lists.stream().filter(list -> {
+                    List<Integer> collect = list.stream().distinct().collect(Collectors.toList());
+                    return collect.size() >= 3;
+                })
+                .filter(list -> list.stream().mapToInt(Integer::intValue).sum() == 0)
+                .peek(list -> list.sort(Integer::compareTo))
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+
+    //请你来实现一个 myAtoi(string s) 函数，使其能将字符串转换成一个 32 位有符号整数（类似 C/C++ 中的 atoi 函数）。
+    //函数 myAtoi(string s) 的算法如下：
+    //读入字符串并丢弃无用的前导空格
+    //检查下一个字符（假设还未到字符末尾）为正还是负号，读取该字符（如果有）。 确定最终结果是负数还是正数。 如果两者都不存在，则假定结果为正。
+    //读入下一个字符，直到到达下一个非数字字符或到达输入的结尾。字符串的其余部分将被忽略。
+    //将前面步骤读入的这些数字转换为整数（即，"123" -> 123， "0032" -> 32）。如果没有读入数字，则整数为 0 。必要时更改符号（从步骤 2 开始）。
+    //如果整数数超过 32 位有符号整数范围 [−231,  231 − 1] ，需要截断这个整数，使其保持在这个范围内。具体来说，小于 −231 的整数应该被固定为 −231 ，大于 231 − 1 的整数应该被固定为 231 − 1 。
+    //返回整数作为最终结果。
+    public static int myAtoi(String s) {
+        String regex = "-?\\d+";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(s);
+        while (matcher.find()) {
+            String match = matcher.group();
+            long number = Long.parseLong(match);
+            return number > Integer.MAX_VALUE ? Integer.MAX_VALUE : number < Integer.MIN_VALUE ? Integer.MIN_VALUE : (int)number;
+        }
+        return 0;
+    }
+
+
+    // 没懂
+    // 思路：知道索引和行数之间的关系，即可
     // 将一个给定字符串 s 根据给定的行数 numRows ，以从上往下、从左到右进行 Z 字形排列。
     //比如输入字符串为 "PAYPALISHIRING" 行数为 3 时，排列如下：
     //P   A   H   N
@@ -43,10 +88,6 @@ public class Arithmetic {
         for(StringBuilder row : rows) res.append(row);
         return res.toString();
     }
-
-
-
-
 
     //一只青蛙一次可以跳上1级台阶，也可以跳上2级台阶。求该青蛙跳上一个 n 级的台阶总共有多少种跳法。
     //答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
@@ -109,8 +150,6 @@ public class Arithmetic {
                 combination.remove(combination.size() - 1);
         }
     }
-
-
 
     //给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
     //
@@ -522,30 +561,42 @@ public class Arithmetic {
     //返回容器可以储存的最大水量。
     //https://leetcode.cn/problems/container-with-most-water/
     public static int maxArea(int[] height) {
-        List<Integer> ret = new ArrayList<>();
-        List<Integer> collect = Arrays.stream(height).boxed().collect(Collectors.toList());
-        int start = 0, end = height.length - 1;
-        for (int i = 0; start < end; i++) {
-            List<Integer> area1 = getArea(start, end, collect);
-            ret.addAll(area1);
-            start = start + 1;
-            List<Integer> area2 = getArea(start, end, collect);
-            ret.addAll(area2);
-            end = end - 1;
+
+        int i = 0, j = height.length - 1, res = 0;
+        while(i < j) {
+            res = height[i] < height[j] ?
+                    Math.max(res, (j - i) * height[i++]):
+                    Math.max(res, (j - i) * height[j--]);
         }
-        if (ret.isEmpty()) {
-            return 0;
-        }
-        return ret.stream().max(Integer::compareTo).get();
+        return res;
+
+        // 性能不好
+//        List<Integer> ret = new ArrayList<>();
+//        List<Integer> collect = Arrays.stream(height).boxed().collect(Collectors.toList());
+//        int start = 0, end = height.length - 1;
+//        for (int i = 0; i < collect.size(); i++) {
+//            for (int q = 0; q < collect.size(); q++) {
+//                List<Integer> area = getArea(i, q, collect);
+//                ret.addAll(area);
+//            }
+//        }
+//        if (ret.isEmpty()) {
+//            return 0;
+//        }
+//        return ret.stream().max(Integer::compareTo).get();
     }
 
     private static List<Integer> getArea(int start, int end, List<Integer> collect) {
         int left = collect.get(start);
         int right = collect.get(end);
         int min = Math.min(left, right);
+
+        int ret = (end - start) * min;
         int area = (BigDecimal.valueOf(start).subtract(BigDecimal.valueOf(end)))
                 .multiply(BigDecimal.valueOf(min)).abs().intValue();
-        return Lists.newArrayList(area);
+        List<Integer> list = new ArrayList<>();
+        list.add(ret);
+        return list;
     }
 
     //给定一个字符串 s ，请你找出其中不含有重复字符的 最长子串 的长度。
