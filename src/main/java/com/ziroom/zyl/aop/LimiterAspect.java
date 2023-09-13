@@ -36,7 +36,7 @@ public class LimiterAspect {
     public void pointCut(){}
 
     @Before("pointCut()")
-    public void before(@Limiter JoinPoint point){
+    public void before(JoinPoint point){
         Method method = ((MethodSignature) point.getSignature()).getMethod();
         log.info("{} 方法开始判断限流",  String.format(" %s.%s", method.getDeclaringClass(), method.getName()));
         Limiter annotation = AnnotationUtils.getAnnotation(method, Limiter.class);

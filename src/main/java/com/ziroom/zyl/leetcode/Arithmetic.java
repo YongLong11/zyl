@@ -2,6 +2,8 @@ package com.ziroom.zyl.leetcode;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
+import com.ziroom.zyl.utils.FeatureUtil;
+import lombok.experimental.UtilityClass;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -15,14 +17,46 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@UtilityClass
 public class Arithmetic {
     static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(5, 10, 0L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
 
     public static void main(String[] args) throws Throwable {
         int[] nums = new int[]{2,3,10,5,7,8,9};
         System.out.println(maxArea(nums));
+        int divide = divide(1, 1);
 
     }
+
+
+    // 使用位运算两数相除
+    public int divide(int dividend, int divisor) {
+        // 处理特殊情况
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE; // 防止溢出
+        }
+        // 确定最终结果的正负号
+        int sign = (dividend < 0) ^ (divisor < 0) ? -1 : 1;
+
+        int ldividend = Math.abs(dividend); // 转换为长整数以处理溢出
+        int ldivisor = Math.abs(divisor);
+
+        long quotient = 0;
+
+        while (ldividend >= ldivisor) {
+            long temp = ldivisor;
+            long multiple = 1;
+            while (ldividend >= (temp << 1)) {
+                temp <<= 1;
+                multiple <<= 1;
+            }
+            ldividend -= temp;
+            quotient += multiple;
+        }
+
+        return (int) (sign * quotient);
+    }
+
 
     // 给你一个整数数组 nums ，判断是否存在三元组 [nums[i], nums[j], nums[k]] 满足 i != j、i != k 且 j != k ，同时还满足 nums[i] + nums[j] + nums[k] == 0 。请
     //你返回所有和为 0 且不重复的三元组。
