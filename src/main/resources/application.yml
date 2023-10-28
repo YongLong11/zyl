@@ -1,7 +1,10 @@
 server:
   port: 8085
 
+
 spring:
+  profiles:
+    active: dev
   datasource:
     hikari:
       zyl:
@@ -22,6 +25,17 @@ spring:
     host: 10.216.4.116
     port: 6384
     timeout: 5000
+  mail:
+    host: smtp.ziroom.com
+    username: zhangyl31@ziroom.com
+    password: Qa1234...
+    port: 25
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          socketFactoryClass: javax.net.ssl.SSLSocketFactory
+        debug: true
 outApi:
   message:
     url: http://message-api-new.kt.ziroom.com/
