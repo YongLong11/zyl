@@ -6,10 +6,13 @@ import com.google.common.collect.Lists;
 import com.zyl.common.Resp;
 import com.zyl.common.constants.RedisConstants;
 import com.zyl.common.enums.CacheEnum;
+import com.zyl.pojo.AlignInfoVo;
 import com.zyl.pojo.SendEmailDto;
 import com.zyl.service.EasyExcelService;
 import com.zyl.service.SendEmailService;
 import com.zyl.utils.RedisUtils;
+import com.zyl.utils.validator.ValidateField;
+import com.zyl.utils.validator.ValidateGroup;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,6 +44,15 @@ public class HelloController {
     SendEmailService sendEmailService;
     @Resource
     Environment environment;
+
+    @ValidateGroup(fields = {
+            @ValidateField(index = 0, filedName = "id", notNull = true, maxVal = 5),
+            @ValidateField(index = 0, filedName = "createName", notNull = false, maxLen = 5)
+    })
+    @PostMapping("/test/valid")
+    public void testValid(@RequestBody AlignInfoVo alignInfoVo){
+        System.out.println(alignInfoVo);
+    }
 
     @GetMapping("/test/resources")
     public void testResources(@RequestParam("name") String name)throws Exception{

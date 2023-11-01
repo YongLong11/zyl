@@ -37,11 +37,11 @@
                         password="ziroomdb"/>
 
         <!-- 主要是配置 targetPackage -->
-        <javaModelGenerator targetPackage="com.ziroom.zyl.mybatisGenerate.dao.entity" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.zyl.mybatisGenerate.dao.entity" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="com.ziroom.zyl.mybatisGenerate.dao.mapper" targetProject="src/main/java">
+        <sqlMapGenerator targetPackage="com.zyl.mybatisGenerate.dao.mapper" targetProject="src/main/java">
             <property name="enableDeleteByExample" value="true"/>
             <property name="enableCountByExample" value="true"/>
             <property name="enableUpdateByExample" value="true"/>
@@ -50,7 +50,7 @@
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator targetPackage="com.ziroom.zyl.mybatisGenerate.dao.mapper" targetProject="src/main/java"
+        <javaClientGenerator targetPackage="com.zyl.mybatisGenerate.dao.mapper" targetProject="src/main/java"
                              type="XMLMAPPER">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
