@@ -13,6 +13,7 @@ import com.zyl.service.SendEmailService;
 import com.zyl.utils.RedisUtils;
 import com.zyl.utils.validator.ValidateField;
 import com.zyl.utils.validator.ValidateGroup;
+import feign.HeaderMap;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

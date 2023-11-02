@@ -40,7 +40,7 @@ public class MessageHelper {
     private static final String CODE_ATTRIBUTE = "code";
     private static final String SUCCESS_CODE = "0";
     public void sendWorkWechat(String toUser, String content, boolean isUseCode) {
-        CompletableFuture.runAsync(() -> {
+//        CompletableFuture.runAsync(() -> {
             Preconditions.checkArgument(StringUtils.isNotBlank(toUser), "发送人为空，导致发送企业微信消息失败");
             Preconditions.checkArgument(StringUtils.isNotBlank(content), "发送内容为空，导致发送企业微信消息失败");
             JSONObject request = new JSONObject();
@@ -58,7 +58,7 @@ public class MessageHelper {
             if (!isSuccess(response)) {
                 throw new BusinessException("推送企业微信消息失败!");
             }
-        });
+//        });
     }
 
     public boolean isSuccess(JSONObject response) {

@@ -1,14 +1,20 @@
 package com.zyl.client;
 
 import com.alibaba.fastjson.JSONObject;
-import com.zyl.client.feignInterceptor.FeignRequestInterceptor;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.zyl.utils.httpAop.annotation.HttpClient;
+import com.zyl.utils.httpAop.annotation.HttpInvoke;
+import com.zyl.utils.httpAop.annotation.ReqBody;
 
-@FeignClient(url = "http://message-api-new.kt.ziroom.com", name = "message-api", configuration = FeignRequestInterceptor.class)
+//@FeignClient(url = "http://message-api-new.kt.ziroom.com", name = "message-api", configuration = FeignRequestInterceptor.class)
+//public interface MessageApi {
+//
+//    @PostMapping("api/work/wechat/send")
+//    JSONObject send(@RequestBody JSONObject request);
+//}
+
+@HttpClient(host = "http://message-api-new.kt.ziroom.com")
 public interface MessageApi {
 
-    @PostMapping("api/work/wechat/send")
-    JSONObject send(@RequestBody JSONObject request);
+    @HttpInvoke(path = "/api/work/wechat/send")
+    JSONObject send(@ReqBody JSONObject request);
 }

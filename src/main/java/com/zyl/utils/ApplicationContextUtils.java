@@ -26,7 +26,7 @@ public class ApplicationContextUtils implements ApplicationContextAware {
         return applicationContext.getBean(clazz);
     }
 
-    public <T> List<T>  getClassList(Class<T> clazz){
+    public static <T> List<T> findBeans(Class<T> clazz){
         if(applicationContext == null){
             return null;
         }
