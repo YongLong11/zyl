@@ -2,6 +2,7 @@ package com.zyl;
 
 
 import com.zyl.initLoad.beanNameGenerator.InterfaceAnnotationBeanNameGenerator;
+import com.zyl.utils.httpAop.annotation.HttpClientEnable;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +15,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 @EnableFeignClients
 @EnableCaching
+@HttpClientEnable(basePackage = "com.zyl")
 //@MapperScan("com.zyl.*.mapper")
 public class ZylApplication {
 
