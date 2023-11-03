@@ -26,7 +26,9 @@ import java.util.function.Supplier;
 
 @Component
 @Slf4j
-public class HttpClientRegistryProcessor implements ImportBeanDefinitionRegistrar, BeanDefinitionRegistryPostProcessor, EnvironmentAware, ResourceLoaderAware {
+public class HttpClientRegistryProcessor implements ImportBeanDefinitionRegistrar,
+//        BeanDefinitionRegistryPostProcessor,
+        EnvironmentAware, ResourceLoaderAware {
 
     private ResourceLoader resourceLoader;
 
@@ -37,19 +39,27 @@ public class HttpClientRegistryProcessor implements ImportBeanDefinitionRegistra
     public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry) {
         Map<String, Object> attributes = annotationMetadata.getAnnotationAttributes(EnableHttpClient.class.getName());
         String basePackage = (String) attributes.get("basePackage");
-        System.setProperty("httpClinet.basePackage", basePackage);
-    }
-
-    @Override
-    public void postProcessBeanDefinitionRegistry(@NotNull BeanDefinitionRegistry registry) {
+//        System.setProperty("httpClient.basePackage", basePackage);
         ClassPathScanningCandidateComponentProvider scanner = getScanner();
         scanner.setResourceLoader(this.resourceLoader);
         scanner.addIncludeFilter(new AnnotationTypeFilter(HttpClient.class));
-        Set<BeanDefinition> beanDefinitionHolders = scanner.findCandidateComponents(System.getProperty("httpClinet.basePackage"));
+//        Set<BeanDefinition> beanDefinitionHolders = scanner.findCandidateComponents(System.getProperty("httpClient.basePackage"));
+        Set<BeanDefinition> beanDefinitionHolders = scanner.findCandidateComponents(basePackage);
         for (BeanDefinition holder : beanDefinitionHolders) {
             registerHttpClientBean(holder, registry);
         }
     }
+
+//    @Override
+//    public void postProcessBeanDefinitionRegistry(@NotNull BeanDefinitionRegistry registry) {
+//        ClassPathScanningCandidateComponentProvider scanner = getScanner();
+//        scanner.setResourceLoader(this.resourceLoader);
+//        scanner.addIncludeFilter(new AnnotationTypeFilter(HttpClient.class));
+//        Set<BeanDefinition> beanDefinitionHolders = scanner.findCandidateComponents(System.getProperty("httpClient.basePackage"));
+//        for (BeanDefinition holder : beanDefinitionHolders) {
+//            registerHttpClientBean(holder, registry);
+//        }
+//    }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void registerHttpClientBean(BeanDefinition definition, BeanDefinitionRegistry registry) {
@@ -72,10 +82,10 @@ public class HttpClientRegistryProcessor implements ImportBeanDefinitionRegistra
         }
     }
 
-    @Override
-    public void postProcessBeanFactory(@NotNull ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        // Do nothing
-    }
+//    @Override
+//    public void postProcessBeanFactory(@NotNull ConfigurableListableBeanFactory beanFactory) throws BeansException {
+//        // Do nothing
+//    }
 
     protected ClassPathScanningCandidateComponentProvider getScanner() {
         return new ClassPathScanningCandidateComponentProvider(false, this.environment) {
