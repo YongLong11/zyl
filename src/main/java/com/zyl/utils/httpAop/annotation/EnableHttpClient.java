@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Import(HttpClientRegistryProcessor.class)
-public @interface HttpClientEnable {
+public @interface EnableHttpClient {
     String basePackage();
 
 }

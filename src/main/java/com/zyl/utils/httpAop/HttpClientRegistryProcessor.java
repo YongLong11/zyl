@@ -1,7 +1,7 @@
 package com.zyl.utils.httpAop;
 
+import com.zyl.utils.httpAop.annotation.EnableHttpClient;
 import com.zyl.utils.httpAop.annotation.HttpClient;
-import com.zyl.utils.httpAop.annotation.HttpClientEnable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
@@ -32,10 +32,10 @@ public class HttpClientRegistryProcessor implements ImportBeanDefinitionRegistra
 
     private Environment environment;
 
-    // 不需要此处配置扫包路径，使用 HttpClientEnable 注解，放在启动类上配置即可
+    // 不需要此处配置扫包路径，使用 EnableHttpClient 注解，放在启动类上配置即可
     @Override
     public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry) {
-        Map<String, Object> attributes = annotationMetadata.getAnnotationAttributes(HttpClientEnable.class.getName());
+        Map<String, Object> attributes = annotationMetadata.getAnnotationAttributes(EnableHttpClient.class.getName());
         String basePackage = (String) attributes.get("basePackage");
         System.setProperty("httpClinet.basePackage", basePackage);
     }
