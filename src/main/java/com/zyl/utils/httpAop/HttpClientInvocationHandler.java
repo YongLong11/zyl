@@ -62,6 +62,7 @@ public class HttpClientInvocationHandler implements InvocationHandler {
         this.environment = environment;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
@@ -208,6 +209,7 @@ public class HttpClientInvocationHandler implements InvocationHandler {
             ((HttpPost) request).setEntity(jsonEntity);
         }
     }
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private void handleGetParams(HttpRequestBase request, Object arg){
         if(!(arg instanceof Map)){
             log.warn("@ReqParam is not map type");
@@ -216,6 +218,7 @@ public class HttpClientInvocationHandler implements InvocationHandler {
         String parameter = getParameter((Map<String, Object>) arg);
         request = new HttpGet(!StringUtils.hasText(parameter) ? request.getURI().toString() : request.getURI().toString() + "?" + parameter);
     }
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private void handleHeader(HttpRequestBase request, Object arg){
         if(!(arg instanceof Map)){
             log.warn("@HeaderMap is not map type");
@@ -259,6 +262,7 @@ public class HttpClientInvocationHandler implements InvocationHandler {
 //            });
 //        }
 //    };
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private String getParameter(Map<String, Object> map) {
         StringBuffer sb=new StringBuffer();
         if(map==null || map.isEmpty()){
@@ -267,7 +271,7 @@ public class HttpClientInvocationHandler implements InvocationHandler {
         for(Map.Entry<String,Object> entry:map.entrySet()){
             sb.append("&");
             if(StringUtils.hasText(entry.getKey())) {
-                if(entry.getValue() instanceof List || entry.getValue() instanceof Set){
+                if(entry.getValue() instanceof Collection){
                     Object collect = ((List) entry.getValue()).stream().collect(Collectors.joining(","));
                     sb.append(collect);
                 }else {

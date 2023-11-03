@@ -1,6 +1,7 @@
 package com.zyl.utils.httpAop;
 
 import com.zyl.utils.httpAop.annotation.HttpClient;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -12,9 +13,7 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.Proxy;
@@ -22,20 +21,12 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 @Component
+@Slf4j
 public class HttpClientRegistryProcessor implements BeanDefinitionRegistryPostProcessor, EnvironmentAware, ResourceLoaderAware {
 
     private ResourceLoader resourceLoader;
 
     private Environment environment;
-
-//    private final RestTemplate restTemplate;
-//
-//    public HttpClientRegistryProcessor() {
-//        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-//        factory.setReadTimeout(5000);//ms
-//        factory.setConnectTimeout(15000);//ms
-//        restTemplate = new RestTemplate(factory);
-//    }
 
     @Override
     public void postProcessBeanDefinitionRegistry(@NotNull BeanDefinitionRegistry registry) {
@@ -65,7 +56,7 @@ public class HttpClientRegistryProcessor implements BeanDefinitionRegistryPostPr
                 registry.registerBeanDefinition(beanName, proxyBeanDefinition);
             }
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log.error("" + e);
         }
     }
 

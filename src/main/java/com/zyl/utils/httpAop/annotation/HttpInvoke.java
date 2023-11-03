@@ -5,6 +5,7 @@ import com.zyl.utils.httpAop.handle.RespHandle;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 
+import java.io.IOException;
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
@@ -17,7 +18,6 @@ public @interface HttpInvoke {
     HttpMethod method() default HttpMethod.POST;
 
     String reqContentType() default MediaType.APPLICATION_JSON_VALUE;
-
     //响应内容类型
 //    HttpConstant respContentType() default HttpConstant.APPLICATION_JSON;
 
@@ -28,7 +28,7 @@ public @interface HttpInvoke {
     Class<? extends RespHandle>[] respHandlers() default {};
 
     // 发生以下异常需要重试
-    Class<? extends Exception>[] retryExceptions() default Exception.class;
+    Class<? extends Exception>[] retryExceptions() default IOException.class;
     // 重试次数
     int retryTimes() default 0;
     // 获取连接时间
