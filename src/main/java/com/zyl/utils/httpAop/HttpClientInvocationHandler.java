@@ -132,7 +132,7 @@ public class HttpClientInvocationHandler implements InvocationHandler {
                     sbPath.append("/");
                 }
             }else {
-                sbPath.append("/");
+                sbPath.append(str).append("/");
             }
         }
         // 处理 host 和 路径之间的拼接问题

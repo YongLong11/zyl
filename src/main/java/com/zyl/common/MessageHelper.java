@@ -53,7 +53,7 @@ public class MessageHelper {
             params.put("content", content);
             request.put("params", params);
             request.put("transferToUser", isUseCode);
-            JSONObject response = messageApi.send(request);
+            JSONObject response = messageApi.send(request, "send");
             log.info("send to {} content is {} response:{}", toUser, content, response);
             if (!isSuccess(response)) {
                 throw new BusinessException("推送企业微信消息失败!");
