@@ -2,7 +2,7 @@ package com.zyl.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.zyl.common.Resp;
-import com.zyl.mq.RocketMQProducer;
+import com.zyl.something.mq.RocketMQProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

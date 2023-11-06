@@ -2,7 +2,7 @@ package com.zyl;
 
 
 import com.zyl.initLoad.beanNameGenerator.InterfaceAnnotationBeanNameGenerator;
-import com.zyl.utils.httpAop.annotation.EnableHttpClient;
+import com.zyl.something.httpAop.annotation.EnableHttpClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;

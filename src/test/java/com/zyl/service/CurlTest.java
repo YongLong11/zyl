@@ -1,7 +1,7 @@
 package com.zyl.service;
 
-import com.zyl.utils.http.HttpUtil;
-import com.zyl.utils.http.LogHttpClient;
+import com.zyl.something.http.HttpUtil;
+import com.zyl.something.http.LogHttpClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

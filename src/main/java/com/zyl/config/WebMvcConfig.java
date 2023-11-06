@@ -1,7 +1,7 @@
 package com.zyl.config;
 
 import com.zyl.advic.interceptor.ZylInterceptor;
-import com.zyl.utils.httpAop.annotation.HttpClient;
+import com.zyl.something.httpAop.annotation.HttpClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;

@@ -10,7 +10,7 @@ import com.google.common.collect.Maps;
 import com.zyl.common.Resp;
 import com.zyl.pojo.SendEmailDto;
 import com.zyl.service.SendEmailService;
-import com.zyl.utils.http.HttpUtil;
+import com.zyl.something.http.HttpUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.tuple.Pair;
