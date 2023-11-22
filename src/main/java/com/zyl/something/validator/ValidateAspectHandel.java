@@ -1,11 +1,10 @@
 package com.zyl.something.validator;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -23,8 +22,8 @@ import java.util.Map;
 @Component
 @Aspect
 @Order(2)
+@Slf4j
 public class ValidateAspectHandel {
-    Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Around("@annotation(com.zyl.something.validator.ValidateGroup)")
     public Object validateAround(ProceedingJoinPoint joinPoint) throws Throwable {

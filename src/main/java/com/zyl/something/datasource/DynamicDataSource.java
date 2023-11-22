@@ -1,4 +1,4 @@
-package com.zyl.datasource;
+package com.zyl.something.datasource;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 

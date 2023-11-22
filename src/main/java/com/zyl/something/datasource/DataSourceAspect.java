@@ -1,4 +1,4 @@
-package com.zyl.datasource;
+package com.zyl.something.datasource;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
 public class DataSourceAspect {
 
 //    @Pointcut("@annotation(com.zyl.datasource.TargetDataSource) || execution( * com.zyl.mybatisGenerate.service..*(..))")
-    @Pointcut("@annotation(com.zyl.datasource.TargetDataSource)")
+    @Pointcut("@annotation(com.zyl.something.datasource.TargetDataSource)")
     public void dataSourcePoint() {}
 
     @Around("dataSourcePoint()")

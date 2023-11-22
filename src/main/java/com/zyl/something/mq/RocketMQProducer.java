@@ -25,10 +25,19 @@ public class RocketMQProducer {
     private String topic;
 
     public void sendTopic(Object msg) {
+        sendTopic(topic, msg, defauteSendCallback());
+    }
+    public void sendTopic(String topic, Object msg) {
+        sendTopic(topic, msg, defauteSendCallback());
+    }
+    public void sendTopic(Object msg, SendCallback sendCallback) {
+        sendTopic(topic, msg, defauteSendCallback());
+    }
+    public void sendTopic(String topic, Object msg, SendCallback sendCallback) {
         try {
             Message message = new Message(topic, JSON.toJSONBytes(msg));
 
-            defaultMQProducer.send(message, defauteSendCallback());
+            defaultMQProducer.send(message, sendCallback);
 
         } catch (MQClientException | RemotingException | InterruptedException e) {
             log.error("sendMQ.sendTopic ERROR topic:{}", topic, e);
