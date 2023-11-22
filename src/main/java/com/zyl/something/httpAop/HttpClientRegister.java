@@ -2,12 +2,14 @@ package com.zyl.something.httpAop;
 
 import com.zyl.something.httpAop.annotation.HttpClient;
 import com.zyl.something.httpAop.annotation.EnableHttpClient;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.*;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.ResourceLoaderAware;
+import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.env.Environment;
@@ -15,17 +17,18 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.Proxy;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
 @Component
 @Slf4j
-public class HttpClientRegistryRegister implements ImportBeanDefinitionRegistrar,
-//        BeanDefinitionRegistryPostProcessor,
+public class HttpClientRegister implements ImportBeanDefinitionRegistrar,
         EnvironmentAware, ResourceLoaderAware {
 
     private ResourceLoader resourceLoader;
@@ -34,14 +37,17 @@ public class HttpClientRegistryRegister implements ImportBeanDefinitionRegistrar
 
     // 不需要此处配置扫包路径，使用 EnableHttpClient 注解，放在启动类上配置即可
     @Override
-    public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry) {
+    public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry){
         Map<String, Object> attributes = annotationMetadata.getAnnotationAttributes(EnableHttpClient.class.getName());
+        if(CollectionUtils.isEmpty(attributes)){
+            throw new RuntimeException("EnableHttpClient basePackage must not null");
+        }
         String basePackage = (String) attributes.get("basePackage");
-//        System.setProperty("httpClient.basePackage", basePackage);
         ClassPathScanningCandidateComponentProvider scanner = getScanner();
+        ClassPathBeanDefinitionScanner beanDefinitionScanner = new ClassPathBeanDefinitionScanner(registry, false);
         scanner.setResourceLoader(this.resourceLoader);
         scanner.addIncludeFilter(new AnnotationTypeFilter(HttpClient.class));
-//        Set<BeanDefinition> beanDefinitionHolders = scanner.findCandidateComponents(System.getProperty("httpClient.basePackage"));
+        Set<BeanDefinition> candidateComponents = beanDefinitionScanner.findCandidateComponents(basePackage);
         Set<BeanDefinition> beanDefinitionHolders = scanner.findCandidateComponents(basePackage);
         for (BeanDefinition holder : beanDefinitionHolders) {
             registerHttpClientBean(holder, registry);
@@ -79,11 +85,6 @@ public class HttpClientRegistryRegister implements ImportBeanDefinitionRegistrar
             log.error("" + e);
         }
     }
-
-//    @Override
-//    public void postProcessBeanFactory(@NotNull ConfigurableListableBeanFactory beanFactory) throws BeansException {
-//        // Do nothing
-//    }
 
     protected ClassPathScanningCandidateComponentProvider getScanner() {
         return new ClassPathScanningCandidateComponentProvider(false, this.environment) {
