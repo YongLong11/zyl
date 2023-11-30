@@ -1,6 +1,11 @@
 package com.zyl.leetcode;
 
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
+import com.zyl.leetcode.pojo.ListNode;
+import com.zyl.leetcode.pojo.TreeNode;
 import lombok.experimental.UtilityClass;
+import org.springframework.context.annotation.Bean;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -8,6 +13,7 @@ import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,12 +24,315 @@ import java.util.stream.Stream;
 public class Arithmetic {
     static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(5, 10, 0L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
 
-//    public static void main(String[] args) throws Throwable {
+    //    public static void main(String[] args) throws Throwable {
 //        int[] nums = new int[]{2,3,10,5,7,8,9};
 //        System.out.println(maxArea(nums));
 //        int divide = divide(1, 1);
 //
 //    }
+
+    // 使用两个 stack 实现队列功能
+    static Stack<Integer> stack1 = new Stack<Integer>();
+    static Stack<Integer> stack2 = new Stack<Integer>();
+    public static void push(int node) {
+        stack1.push(node);
+    }
+
+    public static int pop() {
+        //将第一个栈中内容弹出放入第二个栈中
+        while(!stack1.isEmpty())
+            stack2.push(stack1.pop());
+        //第二个栈栈顶就是最先进来的元素，即队首
+        int res = stack2.pop();
+        //再将第二个栈的元素放回第一个栈
+        while(!stack2.isEmpty())
+            stack1.push(stack2.pop());
+        return res;
+    }
+
+
+    // 合并两个有序的链表
+    public ListNode mergeKLists (ArrayList<ListNode> lists) {
+        // write code here
+        List<ListNode> all = new ArrayList<>();
+        lists.forEach(listNode -> {
+            while (listNode != null){
+                all.add(listNode);
+                listNode = listNode.next();
+            }
+        });
+        all.sort(Comparator.comparing(ListNode::val));
+        ListNode ret = new ListNode(-1);
+        ListNode result = ret;
+        for (int i = 0; i < all.size(); i++) {
+            ret.next(all.get(i));
+            ret = ret.next();
+            // 最后一个node，他的下一个设为 null
+            if(i == lists.size() - 1){
+                ret.next(null);
+            }
+        }
+        return result.next();
+    }
+
+
+    //链表中的节点每k个一组翻转
+    public ListNode reverseKGroup1 (ListNode head, int k) {
+        if(k<=0) return head;
+        List<Stack<ListNode>> lists = new Stack<>();
+        ListNode dump = head;
+        while (dump != null){
+            int flag = 0;
+            Stack<ListNode> stack = new Stack<>();
+            for (int i = 0; i < k; i++) {
+                flag++;
+                stack.push(dump);
+                dump = dump.next();
+            }
+            // flag 大小不等于 K，说明是到最后一个阶段了，反转顺序后放进 stack 保证输出的顺序一致
+            if(flag != k ){
+                ListNode pop = null;
+                while (flag-- > 0){
+                    pop = stack.pop();
+                }
+                ListNode listNode = reverseList(pop);
+                while (listNode != null){
+                    stack.push(listNode);
+                    listNode = listNode.next();
+                }
+            }else {
+                lists.add(stack);
+            }
+        }
+        // 重组为对列，方便生成 listNode
+        List<ListNode> queue = new ArrayList<>();
+        lists.forEach(stack -> {
+            while (!stack.empty()){
+                queue.add(stack.pop());
+            }
+        });
+
+        ListNode ret = new ListNode(-1);
+        ListNode result = ret;
+        for (int i = 0; i < queue.size(); i++) {
+            ret.next(queue.get(i));
+            ret = ret.next();
+            // 最后一个node，他的下一个设为 null
+            if(i == queue.size() - 1){
+                ret.next(null);
+            }
+        }
+        return result.next();
+
+    }
+    public ListNode reverseKGroup (ListNode head, int k) {
+        if(k<=0) return head;
+        ListNode dump = head;
+        int start = 1;
+        do {
+            int end = start + k - 1;
+            ListNode reversed = reverseBetween(dump, start, end);
+            start = end + 1;
+            if(reversed != null){
+                dump = reversed;
+            }else {
+                break;
+            }
+        } while (true);
+        return dump;
+    }
+
+    // 判断链表是否有环
+    public boolean hasCycle(ListNode head) {
+        Set<ListNode> set = new HashSet<>();
+        if (head == null) {
+            return false;
+        }
+        while (head != null) {
+            if (set.contains(head)) {
+                return true;
+            }
+            set.add(head);
+            head = head.next();
+        }
+        return false;
+    }
+
+    // 快慢指针，追赶游戏，慢指针追得上快指针。就是有环
+    public boolean hasCycle1(ListNode head) {
+        ListNode p1 = head;
+        ListNode p2 = head;
+        int left = 0;
+        int right = 0;
+        while (p2 != null && p2.next() != null) {
+            p1 = p1.next();
+            left++;
+            p2 = p2.next().next();
+            right += 2;
+            if (p1 == p2) {
+                System.out.println("链表环的长度 -> " + (right - left));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 局部链表反转
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        if (head == null || m >= n) {
+            return head;
+        }
+
+        ListNode dummy = new ListNode(0);
+        dummy.next(head);
+        ListNode prev = dummy;
+
+        // 移动到反转的起始位置的前一个节点
+        for (int i = 1; i < m; i++) {
+            if (prev == null) {
+                return null; // 无效输入
+            }
+            prev = prev.next();
+        }
+        if (prev == null) {
+            return null; // 无效输入
+        }
+        ListNode current = prev.next();
+        ListNode next = null;
+        ListNode reversedTail = current;
+
+        // 开始局部反转
+        for (int i = m; i <= n; i++) {
+            if (current == null) {
+                return null; // 无效输入
+            }
+            ListNode temp = current.next();
+            current.next(next);
+            next = current;
+            // 执行最后一次的时候，temp 就是 n + 1 位置的node
+            current = temp;
+        }
+
+        // 连接反转部分的头尾
+        prev.next(next);
+        reversedTail.next(current);
+
+        return dummy.next();
+
+    }
+
+
+    // 链表反转
+    // 先设置一个前置的为 null， 然后反转，当前的下一个应该是前面的那个，
+    // 对当前的上一个重新赋值为当前的，对当前的重新赋值为当前的下一个，
+    public ListNode reverseList(ListNode head){
+        ListNode pre = null;
+        ListNode current = head;
+        while (current != null){
+            ListNode next = current.next();
+            current.next(pre);
+            pre = current;
+            current = next;
+        }
+        return pre;
+    }
+        public ListNode ReverseList(ListNode head) {
+        Stack<ListNode> stack = new Stack<>();
+        //把链表节点全部摘掉放到栈中
+        while (head != null) {
+            stack.push(head);
+            head = head.next();
+        }
+        if (stack.empty()) {
+            return null;
+        }
+        ListNode node = stack.pop();
+        ListNode dummy = node;
+        //栈中的结点全部出栈，然后重新连成一个新的链表
+        while (!stack.isEmpty()) {
+            ListNode tempNode = stack.pop();
+            node.next(tempNode);
+            node = node.next();
+        }
+        //最后一个结点就是反转前的头结点，一定要让他的next
+        //等于空，否则会构成环
+        node.next(null);
+        return dummy;
+    }
+
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        AtomicInteger atomicInteger = new AtomicInteger();
+        atomicInteger.addAndGet(1);
+        if (p == null && q == null) {
+            return true;
+        }
+        if (p == null || q == null) {
+            return false;
+        }
+        if (p.var() != q.var()) {
+            return false;
+        } else {
+            return isSameTree(p.left(), q.left()) && isSameTree(p.right(), q.right());
+        }
+    }
+
+    // 中序遍历的顺序是左、根、右
+    // 前序遍历的顺序是根、左、右
+    // 中序遍历的顺序是左、右、根
+    public void preOrder(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        System.out.println(root.var());
+        preOrder(root.left());
+        preOrder(root.right());
+    }
+
+    public void preOrder2(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode cur = root;
+        while (!stack.empty() || cur != null) {
+            if (cur != null) {
+                //打印根节点
+                System.out.print(cur.var());
+                //根节点入栈
+                stack.push(cur);
+                //访问左子树
+                cur = cur.left();
+            } else {
+                cur = stack.pop().right();
+            }
+        }
+    }
+
+    public void inorder(TreeNode root) {
+        //当前节点为空或是说当前节点都不存在，也就没有必要继续遍历其叶子节点了
+        if (root == null) return;
+        //遍历左叶子节点
+        inorder(root.left());
+        //遍历当前节点
+        System.out.print(root.var() + "\t");
+        //遍历右叶子节点
+        inorder(root.right());
+    }
+
+    public void inOrder2(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode cur = root;
+        while (!stack.empty() || cur != null) {
+            if (cur != null) {
+                stack.push(cur);
+                cur = cur.left();
+            } else {
+                cur = stack.pop();
+                System.out.print(cur.var() + " ");
+                cur = cur.right();
+            }
+        }
+    }
 
 
     // 使用位运算两数相除
@@ -89,7 +398,7 @@ public class Arithmetic {
         while (matcher.find()) {
             String match = matcher.group();
             long number = Long.parseLong(match);
-            return number > Integer.MAX_VALUE ? Integer.MAX_VALUE : number < Integer.MIN_VALUE ? Integer.MIN_VALUE : (int)number;
+            return number > Integer.MAX_VALUE ? Integer.MAX_VALUE : number < Integer.MIN_VALUE ? Integer.MIN_VALUE : (int) number;
         }
         return 0;
     }
@@ -104,19 +413,19 @@ public class Arithmetic {
     //Y   I   R
     //之后，你的输出需要从左往右逐行读取，产生出一个新的字符串，比如："PAHNAPLSIIGYIR"。
     public static String convert(String s, int numRows) {
-        if(numRows < 2) return s;
+        if (numRows < 2) return s;
         List<StringBuilder> rows = new ArrayList<StringBuilder>();
-        for(int i = 0; i < numRows; i++) rows.add(new StringBuilder());
+        for (int i = 0; i < numRows; i++) rows.add(new StringBuilder());
         int i = 0, flag = -1;
-        for(char c : s.toCharArray()) {
+        for (char c : s.toCharArray()) {
             rows.get(i).append(c);
-            if(i == 0 || i == numRows -1) {
-                flag = - flag;
+            if (i == 0 || i == numRows - 1) {
+                flag = -flag;
             }
             i += flag;
         }
         StringBuilder res = new StringBuilder();
-        for(StringBuilder row : rows) res.append(row);
+        for (StringBuilder row : rows) res.append(row);
         return res.toString();
     }
 
@@ -127,14 +436,10 @@ public class Arithmetic {
         int first = 1;
         int second = 1;
         int third = 0;
-        if(n < 2)
-        {
+        if (n < 2) {
             return 1;
-        }
-        else
-        {
-            for(int i = 2; i <= n; i++)
-            {
+        } else {
+            for (int i = 2; i <= n; i++) {
                 third = (first + second) % 1000000007;
                 first = second;
                 second = third;
@@ -142,6 +447,49 @@ public class Arithmetic {
             return third;
         }
 
+    }
+
+    public List<List<Integer>> yanHuiSanJiao(int numRows) {
+        List<List<Integer>> ret = new ArrayList<>();
+        for (int i = 0; i < numRows; i++) {
+            List<Integer> curRow = new ArrayList<>();
+            for (int p = 0; p <= i; p++) {
+                if (p == 0 || p == i) {
+                    curRow.add(1);
+                } else {
+                    Integer num = ret.get(i - 1).get(p - 1) + ret.get(i - 1).get(p);
+                    curRow.add(num);
+                }
+            }
+            ret.add(curRow);
+        }
+        return ret;
+    }
+
+    // 杨辉三角
+    //https://leetcode.cn/problems/pascals-triangle/solutions/510638/yang-hui-san-jiao-by-leetcode-solution-lew9/
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> ret = new ArrayList<>();
+        for (int i = 0; i < numRows; ++i) {
+            List<Integer> row = new ArrayList<Integer>();
+            for (int j = 0; j <= i; ++j) {
+                if (j == 0 || j == i) {
+                    row.add(1);
+                } else {
+                    row.add(ret.get(i - 1).get(j - 1) + ret.get(i - 1).get(j));
+                }
+            }
+            ret.add(row);
+        }
+        return ret;
+    }
+
+    //https://leetcode.cn/problems/climbing-stairs/
+    public static int climbStairs(int n) {
+        if (n == 1 || n == 2) {
+            return n;
+        }
+        return climbStairs(n - 1) + climbStairs(n - 2);
     }
 
 
@@ -165,6 +513,7 @@ public class Arithmetic {
         generateCombinations(list, new ArrayList<>(), 0, k, combinations);
         return combinations;
     }
+
     private static void generateCombinations(List<Integer> list, List<Integer> combination, int index, int k, List<List<Integer>> result) {
         // 终止条件：当前组合的大小等于指定的元素个数
         if (combination.size() == k) {
@@ -172,13 +521,13 @@ public class Arithmetic {
             return;
         }
         for (int i = index; i < list.size(); i++) {
-                int num = list.get(i);
-                // 将选择的元素添加到当前组合中
-                combination.add(num);
-                // 递归调用函数，选择下一个元素
-                generateCombinations(list, combination, i + 1, k, result);
-                // 将选择的元素从当前组合中移除
-                combination.remove(combination.size() - 1);
+            int num = list.get(i);
+            // 将选择的元素添加到当前组合中
+            combination.add(num);
+            // 递归调用函数，选择下一个元素
+            generateCombinations(list, combination, i + 1, k, result);
+            // 将选择的元素从当前组合中移除
+            combination.remove(combination.size() - 1);
         }
     }
 
@@ -594,9 +943,9 @@ public class Arithmetic {
     public static int maxArea(int[] height) {
 
         int i = 0, j = height.length - 1, res = 0;
-        while(i < j) {
+        while (i < j) {
             res = height[i] < height[j] ?
-                    Math.max(res, (j - i) * height[i++]):
+                    Math.max(res, (j - i) * height[i++]) :
                     Math.max(res, (j - i) * height[j--]);
         }
         return res;
@@ -710,7 +1059,7 @@ public class Arithmetic {
 
     // 合并两个有序数据
     public void merge(int[] nums1, int m, int[] nums2, int n) {
-        if(m != n){
+        if (m != n) {
             return;
         }
         int[] array = Stream.concat(Arrays.stream(nums1).boxed()
@@ -735,7 +1084,7 @@ public class Arithmetic {
         int[] array = new int[nums.length];
         int index = 0;
         for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
-            if(entry.getValue().size() >= 2){
+            if (entry.getValue().size() >= 2) {
                 array[index] = entry.getKey();
                 index++;
                 array[index] = entry.getKey();
@@ -757,11 +1106,11 @@ public class Arithmetic {
     //判断你是否能够到达最后一个下标，如果可以，返回 true ；否则，返回 false 。
     // 找到0 ，如果能跨过去，就是可以跳过去。如果遇见0，往前找，看是否能跨过去
     public boolean canJump(int[] nums) {
-        if(nums.length == 1 ){
+        if (nums.length == 1) {
             return true;
         }
-        for(int i=0;i<nums.length;i++) {
-            if(nums[i] == 0 && !check(nums, i)) {
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0 && !check(nums, i)) {
                 return false;
             }
         }
@@ -770,8 +1119,8 @@ public class Arithmetic {
 
     // 跨过0 或者是 直接到终点
     private boolean check(int[] nums, int end) {
-        for(int j=end-1;j>=0;j--) {
-            if(nums[j] + j > end || (j+nums[j]) >= nums.length-1) {
+        for (int j = end - 1; j >= 0; j--) {
+            if (nums[j] + j > end || (j + nums[j]) >= nums.length - 1) {
                 return true;
             }
         }
@@ -793,7 +1142,22 @@ public class Arithmetic {
     }
 
     public static void main(String[] args) {
-        int[] num1 = {1,1,1,2,2,3};
-        int i = removeDuplicates(num1);
+//        ListNode node1 = new ListNode(1);
+//        ListNode node2 = new ListNode(9);
+//        ListNode node3 = new ListNode(8);
+//        ListNode node4 = new ListNode(4);
+//        ListNode node5 = new ListNode(7);
+//        ListNode node6 = new ListNode(6);
+//        ListNode node7 = new ListNode(6);
+//        node1.next(node2);
+//        node2.next(null);
+//        node3.next(node4);
+//        node4.next(node5);
+//        node5.next(node6);
+//        node6.next(node4);
+        push(1);
+        push(2);
+        System.out.println(pop());
+        System.out.println(pop());
     }
 }
