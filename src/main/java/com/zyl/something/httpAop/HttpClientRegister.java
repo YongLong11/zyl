@@ -24,6 +24,7 @@ import java.lang.reflect.Proxy;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 @Component
@@ -44,10 +45,10 @@ public class HttpClientRegister implements ImportBeanDefinitionRegistrar,
         }
         String basePackage = (String) attributes.get("basePackage");
         ClassPathScanningCandidateComponentProvider scanner = getScanner();
-        ClassPathBeanDefinitionScanner beanDefinitionScanner = new ClassPathBeanDefinitionScanner(registry, false);
-        scanner.setResourceLoader(this.resourceLoader);
-        scanner.addIncludeFilter(new AnnotationTypeFilter(HttpClient.class));
-        Set<BeanDefinition> candidateComponents = beanDefinitionScanner.findCandidateComponents(basePackage);
+//        ClassPathBeanDefinitionScanner beanDefinitionScanner = new ClassPathBeanDefinitionScanner(registry, false);
+//        scanner.setResourceLoader(this.resourceLoader);
+//        scanner.addIncludeFilter(new AnnotationTypeFilter(HttpClient.class));
+//        Set<BeanDefinition> candidateComponents = beanDefinitionScanner.findCandidateComponents(basePackage);
         Set<BeanDefinition> beanDefinitionHolders = scanner.findCandidateComponents(basePackage);
         for (BeanDefinition holder : beanDefinitionHolders) {
             registerHttpClientBean(holder, registry);

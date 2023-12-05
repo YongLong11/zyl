@@ -31,6 +31,25 @@ public class Arithmetic {
 //
 //    }
 
+    // 寻找峰值
+    public int findPeakElement (int[] nums) {
+        // write code here
+        if(nums.length < 3){
+            return 0;
+        }
+        int right = nums.length - 1;
+        int left = 0;
+        while (left < right){
+            int mid = (left + right) / 2;
+            if(nums[mid] > nums[mid + 1]){
+                right = mid;
+            }else {
+                left = mid + 1;
+            }
+        }
+        return nums[right];
+    }
+
     // 使用两个 stack 实现队列功能
     static Stack<Integer> stack1 = new Stack<Integer>();
     static Stack<Integer> stack2 = new Stack<Integer>();
@@ -764,6 +783,28 @@ public class Arithmetic {
 
     // 最长公共前缀
     // https://leetcode.cn/problems/longest-common-prefix/
+    public String longestCommonPrefix1 (String[] strs) {
+       if(strs ==null || strs.length==0){
+           return "";
+       }
+       if(strs.length == 1){
+           return strs[0];
+       }
+        int length = strs[0].length();
+        int count = strs.length;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            char c = strs[0].charAt(i);
+            stringBuilder.append(c);
+            for (int p = 0; p < count; p++) {
+                // 如果没有走这个if，就是都匹配上了，全部相等
+                if(strs[p].length() == i|| !strs[p].startsWith(stringBuilder.toString())){
+                    return stringBuilder.substring(0, i);
+                }
+            }
+        }
+       return strs[0];
+    }
     public static String longestCommonPrefix(String[] strs) {
         if (strs == null || strs.length == 0) {
             return "";
@@ -908,6 +949,38 @@ public class Arithmetic {
             end--;
         }
         return true;
+    }
+
+
+    public static int longestPalindrome1(String s) {
+        if (s == null || s.length() < 1) {
+            return 0;
+        }
+
+        int start = 0;
+        int end = 0;
+        int max = 0;
+        for (int i = 0; i < s.length(); i++) {
+            // 以当前字符为中心的奇数长度回文子串
+            int len1 = expandAroundCenter(s, i, i);
+            // 以当前字符和下一个字符的中间为中心的偶数长度回文子串
+            int len2 = expandAroundCenter(s, i, i + 1);
+
+           max = Math.max(len1, len2);
+        }
+
+        // 返回最长回文子串
+        return max;
+    }
+
+    private static int expandAroundCenter(String s, int left, int right) {
+        // 从当前中心向两边扩展，检查回文子串长度
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+        // 返回回文子串的长度
+        return right - left - 1;
     }
 
 
@@ -1141,7 +1214,58 @@ public class Arithmetic {
         return len + 1;
     }
 
-    public static void main(String[] args) {
+    // 连续子数组的最大和
+    public int FindGreatestSumOfSubArray (int[] array) {
+        int max = array[0];
+        int sum = 0;
+        for(int i=0;i<array.length;i++){
+            // 每开启新的循环，需要把sum归零
+            sum = 0;
+            for(int j=i;j<array.length;j++){
+                // 这里是求从i到j的数值和
+                sum += array[j];
+                // 每次比较，保存出现的最大值
+                max = Math.max(max,sum);
+            }
+        }
+        return max;
+    }
+
+    // 标号1-n的n个人首尾相接，1到3报数，报到3的退出，求最后一个人的标号
+    public static int getLastPersonNumber(int n) {
+        if(n < 1){
+            return -1;
+        }
+        int[] arr = new int[n + 1];
+        for (int i = 0; i <= n; i++) {
+            arr[i] = i;
+        }
+
+        int outCount = 0 ;
+        int flag = 0;
+        int i = 0 ;
+        while (outCount != n - 1){
+            if (i > n) { // i 既是下标, 也是编号
+                i = 1;
+            }
+
+            // 没出去的计入计算
+            if(arr[i] != 0){
+                flag++;
+            }
+            if(flag == 3 && outCount != n - 1){
+                flag = 0;
+                outCount++;
+                // 设为0 表示已经出去了
+                arr[i] = 0;
+            }else if(outCount != n - 1){
+                return i;
+            }
+        }
+        return  -1;
+    }
+
+        public static void main(String[] args) {
 //        ListNode node1 = new ListNode(1);
 //        ListNode node2 = new ListNode(9);
 //        ListNode node3 = new ListNode(8);
@@ -1155,9 +1279,9 @@ public class Arithmetic {
 //        node4.next(node5);
 //        node5.next(node6);
 //        node6.next(node4);
-        push(1);
-        push(2);
-        System.out.println(pop());
-        System.out.println(pop());
+
+        String input = "babad";
+        int result = longestPalindrome1(input);
+        System.out.println("Longest Palindrome Substring: " + result);
     }
 }

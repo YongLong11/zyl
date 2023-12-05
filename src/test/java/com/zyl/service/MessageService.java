@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.*;
 
 @SpringBootTest
 public class MessageService {
@@ -26,6 +27,9 @@ public class MessageService {
     @Test
     void testSend2(){
         messageHelper.sendWorkWechat("60042077", "hah", true);
+    }
 
+    public static void main(String[] args) {
+        HashMap<String, String> map = new HashMap<>();
     }
 }
