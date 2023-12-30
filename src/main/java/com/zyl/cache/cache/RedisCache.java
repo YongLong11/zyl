@@ -60,7 +60,11 @@ public class RedisCache implements Cache{
 
     private void assembleRedisUtil(){
         if(Objects.isNull(redisUtils)){
-            redisUtils = ApplicationContextUtils.findBean(RedisUtils.class);
+            synchronized (this){
+                if(Objects.isNull(redisUtils)){
+                    redisUtils = ApplicationContextUtils.findBean(RedisUtils.class);
+                }
+            }
         }
     }
 }

@@ -1,14 +1,14 @@
-package com.zyl.jpa.service.impl;
+package com.zyl.orm.jpa.service.impl;
 
 
 import com.google.common.collect.Lists;
-import com.zyl.jpa.repository.UserRepository;
-import com.zyl.jpa.service.UserService;
+import com.zyl.orm.jpa.repository.UserRepository;
+import com.zyl.orm.jpa.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
-import com.zyl.jpa.entity.User;
+import com.zyl.orm.jpa.entity.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

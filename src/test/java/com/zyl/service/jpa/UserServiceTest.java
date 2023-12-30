@@ -1,7 +1,7 @@
 package com.zyl.service.jpa;
 
-import com.zyl.jpa.entity.User;
-import com.zyl.jpa.service.UserService;
+import com.zyl.orm.jpa.entity.User;
+import com.zyl.orm.jpa.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

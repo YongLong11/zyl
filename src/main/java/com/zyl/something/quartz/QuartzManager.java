@@ -1,7 +1,7 @@
 package com.zyl.something.quartz;
 
 
-import com.zyl.jpa.entity.ScheduledAnalyze;
+import com.zyl.orm.jpa.entity.ScheduledAnalyze;
 import com.zyl.something.quartz.job.QuartzJob;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;

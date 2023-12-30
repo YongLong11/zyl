@@ -1,4 +1,4 @@
-package com.zyl.leetcode.pojo;
+package com.zyl.arithmetrc.leetcode.pojo;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -11,5 +11,13 @@ public class ListNode {
 
     public ListNode(int val) {
         this.val = val;
+    }
+
+    @Override
+    public String toString() {
+        return "ListNode{" +
+                "val=" + val +
+                ", next=" + next +
+                '}';
     }
 }

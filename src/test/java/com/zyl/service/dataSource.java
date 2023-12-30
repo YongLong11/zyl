@@ -1,6 +1,6 @@
 package com.zyl.service;
 
-import com.zyl.jpa.entity.User;
+import com.zyl.orm.jpa.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -12,7 +12,6 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 @SpringBootTest
 public class dataSource {

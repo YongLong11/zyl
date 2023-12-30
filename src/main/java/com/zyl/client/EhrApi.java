@@ -8,11 +8,12 @@ package com.zyl.client;
  **/
 
 import com.alibaba.fastjson.JSONObject;
+import com.zyl.client.feignInterceptor.FeignRequestInterceptor;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(url = "127.0.0.1", name = "ehr")
+@FeignClient(url = "127.0.0.1", name = "ehr", configuration = FeignRequestInterceptor.class)
 public interface EhrApi {
 
     /**

@@ -1,11 +1,9 @@
-package com.zyl.leetcode;
+package com.zyl.arithmetrc.leetcode;
 
-import com.alibaba.fastjson.JSON;
-import com.google.common.collect.Lists;
-import com.zyl.leetcode.pojo.ListNode;
-import com.zyl.leetcode.pojo.TreeNode;
+import com.zyl.arithmetrc.leetcode.interview.Test;
+import com.zyl.arithmetrc.leetcode.pojo.TreeNode;
+import com.zyl.arithmetrc.leetcode.pojo.ListNode;
 import lombok.experimental.UtilityClass;
-import org.springframework.context.annotation.Bean;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -15,8 +13,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,18 +28,18 @@ public class Arithmetic {
 //    }
 
     // 寻找峰值
-    public int findPeakElement (int[] nums) {
+    public int findPeakElement(int[] nums) {
         // write code here
-        if(nums.length < 3){
+        if (nums.length < 3) {
             return 0;
         }
         int right = nums.length - 1;
         int left = 0;
-        while (left < right){
+        while (left < right) {
             int mid = (left + right) / 2;
-            if(nums[mid] > nums[mid + 1]){
+            if (nums[mid] > nums[mid + 1]) {
                 right = mid;
-            }else {
+            } else {
                 left = mid + 1;
             }
         }
@@ -53,29 +49,30 @@ public class Arithmetic {
     // 使用两个 stack 实现队列功能
     static Stack<Integer> stack1 = new Stack<Integer>();
     static Stack<Integer> stack2 = new Stack<Integer>();
+
     public static void push(int node) {
         stack1.push(node);
     }
 
     public static int pop() {
         //将第一个栈中内容弹出放入第二个栈中
-        while(!stack1.isEmpty())
+        while (!stack1.isEmpty())
             stack2.push(stack1.pop());
         //第二个栈栈顶就是最先进来的元素，即队首
         int res = stack2.pop();
         //再将第二个栈的元素放回第一个栈
-        while(!stack2.isEmpty())
+        while (!stack2.isEmpty())
             stack1.push(stack2.pop());
         return res;
     }
 
 
     // 合并两个有序的链表
-    public ListNode mergeKLists (ArrayList<ListNode> lists) {
+    public ListNode mergeKLists(ArrayList<ListNode> lists) {
         // write code here
         List<ListNode> all = new ArrayList<>();
         lists.forEach(listNode -> {
-            while (listNode != null){
+            while (listNode != null) {
                 all.add(listNode);
                 listNode = listNode.next();
             }
@@ -87,7 +84,7 @@ public class Arithmetic {
             ret.next(all.get(i));
             ret = ret.next();
             // 最后一个node，他的下一个设为 null
-            if(i == lists.size() - 1){
+            if (i == lists.size() - 1) {
                 ret.next(null);
             }
         }
@@ -96,11 +93,11 @@ public class Arithmetic {
 
 
     //链表中的节点每k个一组翻转
-    public ListNode reverseKGroup1 (ListNode head, int k) {
-        if(k<=0) return head;
+    public ListNode reverseKGroup1(ListNode head, int k) {
+        if (k <= 0) return head;
         List<Stack<ListNode>> lists = new Stack<>();
         ListNode dump = head;
-        while (dump != null){
+        while (dump != null) {
             int flag = 0;
             Stack<ListNode> stack = new Stack<>();
             for (int i = 0; i < k; i++) {
@@ -109,24 +106,24 @@ public class Arithmetic {
                 dump = dump.next();
             }
             // flag 大小不等于 K，说明是到最后一个阶段了，反转顺序后放进 stack 保证输出的顺序一致
-            if(flag != k ){
+            if (flag != k) {
                 ListNode pop = null;
-                while (flag-- > 0){
+                while (flag-- > 0) {
                     pop = stack.pop();
                 }
                 ListNode listNode = reverseList(pop);
-                while (listNode != null){
+                while (listNode != null) {
                     stack.push(listNode);
                     listNode = listNode.next();
                 }
-            }else {
+            } else {
                 lists.add(stack);
             }
         }
         // 重组为对列，方便生成 listNode
         List<ListNode> queue = new ArrayList<>();
         lists.forEach(stack -> {
-            while (!stack.empty()){
+            while (!stack.empty()) {
                 queue.add(stack.pop());
             }
         });
@@ -137,24 +134,25 @@ public class Arithmetic {
             ret.next(queue.get(i));
             ret = ret.next();
             // 最后一个node，他的下一个设为 null
-            if(i == queue.size() - 1){
+            if (i == queue.size() - 1) {
                 ret.next(null);
             }
         }
         return result.next();
 
     }
-    public ListNode reverseKGroup (ListNode head, int k) {
-        if(k<=0) return head;
+
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if (k <= 0) return head;
         ListNode dump = head;
         int start = 1;
         do {
             int end = start + k - 1;
             ListNode reversed = reverseBetween(dump, start, end);
             start = end + 1;
-            if(reversed != null){
+            if (reversed != null) {
                 dump = reversed;
-            }else {
+            } else {
                 break;
             }
         } while (true);
@@ -244,10 +242,10 @@ public class Arithmetic {
     // 链表反转
     // 先设置一个前置的为 null， 然后反转，当前的下一个应该是前面的那个，
     // 对当前的上一个重新赋值为当前的，对当前的重新赋值为当前的下一个，
-    public ListNode reverseList(ListNode head){
+    public ListNode reverseList(ListNode head) {
         ListNode pre = null;
         ListNode current = head;
-        while (current != null){
+        while (current != null) {
             ListNode next = current.next();
             current.next(pre);
             pre = current;
@@ -255,7 +253,8 @@ public class Arithmetic {
         }
         return pre;
     }
-        public ListNode ReverseList(ListNode head) {
+
+    public ListNode ReverseList(ListNode head) {
         Stack<ListNode> stack = new Stack<>();
         //把链表节点全部摘掉放到栈中
         while (head != null) {
@@ -390,18 +389,31 @@ public class Arithmetic {
     // 道理同foursum，估计是性能不好
     public List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> lists = generateCombinations(Arrays.stream(nums).boxed().collect(Collectors.toList()), 3);
-        return lists.stream().filter(list -> {
-                    List<Integer> collect = list.stream().distinct().collect(Collectors.toList());
-                    return collect.size() >= 3;
-                })
+        return lists.stream()
                 .filter(list -> list.stream().mapToInt(Integer::intValue).sum() == 0)
                 .peek(list -> list.sort(Integer::compareTo))
                 .distinct()
                 .collect(Collectors.toList());
     }
+    public List<List<Integer>> threeSum1(int[] nums) {
+        Set<List<Integer>> ret = new HashSet<>();
+        for (int i = 0; i < nums.length; i++) {
+            for (int p = 0; p < nums.length; p++) {
+                for (int k = 0; k < nums.length; k++) {
+                    if(i !=p && i != k && p != k && nums[i] + nums[p] + nums[k] == 0){
+                        int max = Math.max(Math.max(nums[i], nums[p]), nums[k]);
+                        int min = Math.min(Math.min(nums[i], nums[p]), nums[k]);
+                        int count = nums[i] + nums[p] + nums[k];
+                        ret.add(Arrays.asList(min, count - max - min, max));
+                    }
+                }
+            }
+        }
+        return new ArrayList<>(ret);
+    }
 
 
-    //请你来实现一个 myAtoi(string s) 函数，使其能将字符串转换成一个 32 位有符号整数（类似 C/C++ 中的 atoi 函数）。
+        //请你来实现一个 myAtoi(string s) 函数，使其能将字符串转换成一个 32 位有符号整数（类似 C/C++ 中的 atoi 函数）。
     //函数 myAtoi(string s) 的算法如下：
     //读入字符串并丢弃无用的前导空格
     //检查下一个字符（假设还未到字符末尾）为正还是负号，读取该字符（如果有）。 确定最终结果是负数还是正数。 如果两者都不存在，则假定结果为正。
@@ -410,16 +422,52 @@ public class Arithmetic {
     //如果整数数超过 32 位有符号整数范围 [−231,  231 − 1] ，需要截断这个整数，使其保持在这个范围内。具体来说，小于 −231 的整数应该被固定为 −231 ，大于 231 − 1 的整数应该被固定为 231 − 1 。
     //返回整数作为最终结果。
     public static int myAtoi(String s) {
-        String regex = "-?\\d+";
+//        String regex = "^-(2[0-9]{9}|[1-9][0-9]{9})$";
+        s = s.replace(" ", "");
+        boolean minusFlag = false;
+        StringBuilder stringBuilder = new StringBuilder("");
+        for (int i = 0; i < s.length(); i++) {
+            String c = String.valueOf(s.charAt(i));
+            try {
 
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(s);
-        while (matcher.find()) {
-            String match = matcher.group();
-            long number = Long.parseLong(match);
-            return number > Integer.MAX_VALUE ? Integer.MAX_VALUE : number < Integer.MIN_VALUE ? Integer.MIN_VALUE : (int) number;
+                if (c.equals("-")) {
+                    stringBuilder.append("-");
+                    minusFlag = true;
+                    continue;
+                }
+                Integer num = Integer.parseInt(c);
+                stringBuilder.append(num);
+            } catch (NumberFormatException e) {
+                if (minusFlag && stringBuilder.length() == 1) {
+                    stringBuilder.delete(0, stringBuilder.length());
+                    continue;
+                }
+                if(!minusFlag && stringBuilder.length() != 0){
+                    break;
+                }else if (minusFlag && stringBuilder.length() != 1){
+                    break;
+                }
+                minusFlag = false;
+            }
+        }
+        if(stringBuilder.length() > 0){
+            for (int i = stringBuilder.length(); i <= stringBuilder.length(); i++) {
+                String substring = stringBuilder.substring(0, i);
+                int num = Integer(substring);
+                if(num != 0){
+                    return num;
+                }
+            }
         }
         return 0;
+    }
+
+    private static int Integer(String stringBuilder){
+        try {
+            return Integer.parseInt(stringBuilder);
+        }catch (NumberFormatException e){
+            return 0;
+        }
     }
 
 
@@ -662,7 +710,7 @@ public class Arithmetic {
         Map<String, List<Integer>> levelMap = getMap();
         String result = "";
         while (num > 0) {
-            String luoMa = getLuoMa(num);
+            String luoMa = getLuoMa(num, levelMap);
             result = result + luoMa;
             Integer i = levelMap.get(luoMa).get(0);
             num = num - i;
@@ -673,23 +721,23 @@ public class Arithmetic {
     private static Map<String, List<Integer>> getMap() {
         Map<String, List<Integer>> levelMap = new LinkedHashMap<>();
         levelMap.put("I", Arrays.asList(1, 4));
-        levelMap.put("V", Arrays.asList(5, 9));
-        levelMap.put("X", Arrays.asList(10, 40));
-        levelMap.put("L", Arrays.asList(50, 90));
-        levelMap.put("C", Arrays.asList(100, 400));
-        levelMap.put("D", Arrays.asList(500, 100));
-        levelMap.put("M", Arrays.asList(1000, Integer.MAX_VALUE));
         levelMap.put("IV", Arrays.asList(4, 5));
+        levelMap.put("V", Arrays.asList(5, 9));
         levelMap.put("IX", Arrays.asList(9, 10));
+        levelMap.put("X", Arrays.asList(10, 40));
         levelMap.put("XL", Arrays.asList(40, 50));
+        levelMap.put("L", Arrays.asList(50, 90));
         levelMap.put("XC", Arrays.asList(90, 100));
+        levelMap.put("C", Arrays.asList(100, 400));
         levelMap.put("CD", Arrays.asList(400, 500));
+        levelMap.put("D", Arrays.asList(500, 900));
         levelMap.put("CM", Arrays.asList(900, 1000));
+        levelMap.put("M", Arrays.asList(1000, Integer.MAX_VALUE));
+
         return levelMap;
     }
 
-    private static String getLuoMa(Integer num) {
-        Map<String, List<Integer>> levelMap = getMap();
+    private static String getLuoMa(Integer num, Map<String, List<Integer>> levelMap) {
         // 实际使用，左闭右开
         return levelMap.entrySet()
                 .stream()
@@ -783,13 +831,13 @@ public class Arithmetic {
 
     // 最长公共前缀
     // https://leetcode.cn/problems/longest-common-prefix/
-    public String longestCommonPrefix1 (String[] strs) {
-       if(strs ==null || strs.length==0){
-           return "";
-       }
-       if(strs.length == 1){
-           return strs[0];
-       }
+    public String longestCommonPrefix1(String[] strs) {
+        if (strs == null || strs.length == 0) {
+            return "";
+        }
+        if (strs.length == 1) {
+            return strs[0];
+        }
         int length = strs[0].length();
         int count = strs.length;
         StringBuilder stringBuilder = new StringBuilder();
@@ -798,13 +846,14 @@ public class Arithmetic {
             stringBuilder.append(c);
             for (int p = 0; p < count; p++) {
                 // 如果没有走这个if，就是都匹配上了，全部相等
-                if(strs[p].length() == i|| !strs[p].startsWith(stringBuilder.toString())){
+                if (strs[p].length() == i || !strs[p].startsWith(stringBuilder.toString())) {
                     return stringBuilder.substring(0, i);
                 }
             }
         }
-       return strs[0];
+        return strs[0];
     }
+
     public static String longestCommonPrefix(String[] strs) {
         if (strs == null || strs.length == 0) {
             return "";
@@ -916,6 +965,44 @@ public class Arithmetic {
 
     }
 
+    // 两个字符串最长公共子字符串
+    // 二维数组，两个数组每个字符都有相交
+    public static String longestCommonSubsequence(String str1, String str2, String str3) {
+        if (str1 == null || str2 == null ||
+                str1.isEmpty() || str2.isEmpty()) {
+            return "";
+        }
+
+        int s1 = str1.length();
+        int s2 = str2.length();
+        int[][] arr = new int[s1 + 1][s2 + 1];
+        int endIndex = 0;  // 记录最长公共子串的结束位置
+        int maxLen = 0;    // 记录最长公共子串的长度
+
+        for (int i = 1; i <= s1; i++) {
+            for (int p = 1; p <= s2; p++) {
+                if (str1.charAt(i - 1) == str2.charAt(p - 1)) {
+                    arr[i][p] = arr[i - 1][p - 1] + 1;
+
+                    if (arr[i][p] > maxLen) {
+                        maxLen = arr[i][p];
+                        endIndex = i - 1;  // 更新最长公共子串的结束位置
+                    }
+                } else {
+                    arr[i][p] = 0;
+                }
+            }
+        }
+
+        if (maxLen == 0) {
+            return "";  // 没有公共子串
+        }
+
+        // 从str1中截取最长公共子串
+        return str1.substring(endIndex - maxLen + 1, endIndex + 1);
+    }
+
+
     //给你一个字符串 s，找到 s 中最长的回文子串。
     //如果字符串的反序与原始字符串相同，则该字符串称为回文字符串。
     // https://leetcode.cn/problems/longest-palindromic-substring/
@@ -951,6 +1038,45 @@ public class Arithmetic {
         return true;
     }
 
+    public static String longestPalindrome2(String s) {
+        int max = 0;
+        int endIndex = 0;
+        if (s == null || s.isEmpty()) {
+            return null;
+        }
+        int length = s.length();
+
+        if (length == 1) {
+            return s;
+        }
+
+        for (int i = 0; i < length - 1; i++) {
+            int len1 = sidePalindrome(s, i, i);
+            int len2 = sidePalindrome(s, i, i + 1);
+
+            int currentMax = Math.max(len1, len2);
+            if (currentMax > max) {
+                max = currentMax;
+                endIndex = (currentMax / 2) + i;
+            }
+        }
+
+        return s.substring(endIndex - max + 1, endIndex + 1);
+    }
+
+    public static int sidePalindrome(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && left <= right) {
+            char leftChar = s.charAt(left);
+            char rightChar = s.charAt(right);
+            if (leftChar == rightChar) {
+                left--;
+                right++;
+            } else {
+                break;
+            }
+        }
+        return (right - left + 1 - 2);
+    }
 
     public static int longestPalindrome1(String s) {
         if (s == null || s.length() < 1) {
@@ -966,7 +1092,7 @@ public class Arithmetic {
             // 以当前字符和下一个字符的中间为中心的偶数长度回文子串
             int len2 = expandAroundCenter(s, i, i + 1);
 
-           max = Math.max(len1, len2);
+            max = Math.max(Math.max(len1, len2), max);
         }
 
         // 返回最长回文子串
@@ -974,13 +1100,16 @@ public class Arithmetic {
     }
 
     private static int expandAroundCenter(String s, int left, int right) {
+
         // 从当前中心向两边扩展，检查回文子串长度
         while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
             left--;
             right++;
         }
         // 返回回文子串的长度
-        return right - left - 1;
+        // 不满足退出循环，但是此时已经执行了 -- ++
+        // fixme 有疑问？？？ ABCD 中 A算不算一个题解
+        return (right - left + 1 - 2) == 1 ? 0 : (right - left + 1 - 2);
     }
 
 
@@ -992,7 +1121,6 @@ public class Arithmetic {
         for (int i = 0; i < length; i++) {
             ret.add(1);
         }
-        HashMap<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < length; i++) {
             // 右移有两种情况，1、未超过数组长度，2、超过数组长度
             if ((i + k) < length) {
@@ -1215,17 +1343,17 @@ public class Arithmetic {
     }
 
     // 连续子数组的最大和
-    public int FindGreatestSumOfSubArray (int[] array) {
+    public int FindGreatestSumOfSubArray(int[] array) {
         int max = array[0];
         int sum = 0;
-        for(int i=0;i<array.length;i++){
+        for (int i = 0; i < array.length; i++) {
             // 每开启新的循环，需要把sum归零
             sum = 0;
-            for(int j=i;j<array.length;j++){
+            for (int j = i; j < array.length; j++) {
                 // 这里是求从i到j的数值和
                 sum += array[j];
                 // 每次比较，保存出现的最大值
-                max = Math.max(max,sum);
+                max = Math.max(max, sum);
             }
         }
         return max;
@@ -1233,7 +1361,7 @@ public class Arithmetic {
 
     // 标号1-n的n个人首尾相接，1到3报数，报到3的退出，求最后一个人的标号
     public static int getLastPersonNumber(int n) {
-        if(n < 1){
+        if (n < 1) {
             return -1;
         }
         int[] arr = new int[n + 1];
@@ -1241,31 +1369,171 @@ public class Arithmetic {
             arr[i] = i;
         }
 
-        int outCount = 0 ;
+        int outCount = 0;
         int flag = 0;
-        int i = 0 ;
-        while (outCount != n - 1){
+        int i = 0;
+        while (outCount != n - 1) {
             if (i > n) { // i 既是下标, 也是编号
                 i = 1;
             }
 
             // 没出去的计入计算
-            if(arr[i] != 0){
+            if (arr[i] != 0) {
                 flag++;
             }
-            if(flag == 3 && outCount != n - 1){
+            if (flag == 3 && outCount != n - 1) {
                 flag = 0;
                 outCount++;
                 // 设为0 表示已经出去了
                 arr[i] = 0;
-            }else if(outCount != n - 1){
+            } else if (outCount != n - 1) {
                 return i;
             }
         }
-        return  -1;
+        return -1;
     }
 
-        public static void main(String[] args) {
+    // 有红、黄、蓝三种颜色的气球。
+    //在牛客王国，1个红气球+1个黄气球+1个蓝气球可以兑换一张彩票。
+    //2个红气球+1个黄气球可以兑换1个蓝气球。
+    //2个黄气球+1个蓝气球可以兑换1个红气球。
+    //2个蓝气球+1个红气球可以兑换1个黄气球。
+    //现在牛牛有a个红气球，b个黄气球， c个蓝气球，牛牛想知道自己最多可以兑换多少张彩票。
+    // 个红气球+1个黄气球可以兑换1个蓝气球，意味着3个红色气球和2个黄色气球可以兑换一张彩票,其他同理
+    private static int lottery(int red, int yellow, int blue) {
+        // 最小的数字就是一定存在的组合
+        int lottery = Math.min(Math.min(red, yellow), blue);
+        red = red - lottery;
+        yellow = yellow - lottery;
+        blue = blue - lottery;
+        if (red == 0) {
+            while (yellow > 0 && blue > 0) {
+                yellow -= 3;
+                blue -= 2;
+                lottery++;
+            }
+            if (yellow < 0 || blue < 0) {
+                lottery--;
+            }
+        } else if (yellow == 0) {
+            while (red > 0 && blue > 0) {
+                red -= 2;
+                blue -= 3;
+                lottery++;
+            }
+            if (red < 0 || blue < 0) {
+                lottery--;
+            }
+        } else if (blue == 0) {
+            while (red > 0 && yellow > 0) {
+                red -= 3;
+                yellow -= 2;
+                lottery++;
+            }
+            if (yellow < 0 || red < 0) {
+                lottery--;
+            }
+        }
+
+
+        return lottery;
+    }
+
+    // 两个字符串的最长公共子串
+    public static int longestCommonSubsequence(String str1, String str2) {
+        if (str1 == null || str2 == null ||
+                str1.isEmpty() || str2.isEmpty()) {
+            return -1;
+        }
+
+        int s1 = str1.length();
+        int s2 = str2.length();
+        int[][] arr = new int[s1 + 1][s2 + 1];
+        int ret = -1;
+        for (int i = 0; i < s1; i++) {
+            for (int p = 0; p < s2; p++) {
+                if (str1.charAt(i) == str2.charAt(p)) {
+                    if (((i - 1) > 0) && (p - 1) > 0) {
+                        arr[i][p] = arr[i - 1][p - 1] + 1;
+                        ret = Math.max(ret, arr[i][p]);
+                    } else {
+                        arr[i][p] = 0;
+                    }
+                } else {
+                    arr[i][p] = 0;
+                }
+            }
+        }
+
+        return ret;
+    }
+
+    // 在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序，然后给一个整数，判断数组里存不存在
+    public boolean Find(int target, int[][] array) {
+        int rows = array.length;//获得初始行数
+        int cols = array[0].length;//获得初始的列数
+
+
+        boolean flag = false;//设置标志位为false
+        int row = 0;//动态行数默认从0开始
+        int col = cols - 1;//动态列数默认从最后一列开始
+
+
+        while (row <= rows - 1 && col >= 0) {//当没有达到最后一行并且没有达到第一列的时候
+            if (array[row][col] == target) {//如果对象元素等于target，找到，break
+                flag = true;
+                break;
+            } else if (array[row][col] < target) {
+                row++;
+            } else {
+                col--;
+            }
+        }
+        return flag;
+    }
+
+    //给定一个字符串 s 和一个字符串数组 words。 words 中所有字符串 长度相同。
+    //
+    // s 中的 串联子串 是指一个包含  words 中所有字符串以任意顺序排列连接起来的子串。
+    //
+    //例如，如果 words = ["ab","cd","ef"]， 那么 "abcdef"， "abefcd"，"cdabef"， "cdefab"，"efabcd"， 和 "efcdab" 都是串联子串。 "acdbef" 不是串联子串，因为他不是任何 words 排列的连接。
+    //返回所有串联子串在 s 中的开始索引。你可以以 任意顺序 返回答案。
+    // https://leetcode.cn/problems/substring-with-concatenation-of-all-words/description/
+    public static List<Integer> findSubstring(String s, String[] words) {
+        int length = words.length;
+        int[] arr = new int[length];
+        for (int i = 0; i < length; i++) {
+            arr[i] = i;
+        }
+        List<List<Integer>> lists = Test.generatePermutations(arr, length);
+        return lists.stream()
+                .flatMap(list -> list.stream()
+                        .map(i -> words[i])
+                        .reduce((s1, s2) -> s1 + s2)
+                        .map(str -> {
+                            List<Integer> indexs = new ArrayList<>();
+                            indexOf(s, str, indexs, 0);
+                            return indexs;
+                        })
+                        .map(Collection::stream)
+                        .orElse(null))
+                .filter(num -> num != null && num >= 0)
+                .distinct().
+                collect(Collectors.toList());
+    }
+
+    private static void indexOf(String source, String str, List<Integer> ret, int beginIndex){
+        int index = source.indexOf(str, beginIndex);
+        ret.add(index);
+        if(index < 0 ){
+            return ;
+        }else {
+            indexOf(source, str, ret, index + 1);
+        }
+    }
+
+
+    public static void main(String[] args) {
 //        ListNode node1 = new ListNode(1);
 //        ListNode node2 = new ListNode(9);
 //        ListNode node3 = new ListNode(8);
@@ -1279,9 +1547,11 @@ public class Arithmetic {
 //        node4.next(node5);
 //        node5.next(node6);
 //        node6.next(node4);
-
-        String input = "babad";
-        int result = longestPalindrome1(input);
-        System.out.println("Longest Palindrome Substring: " + result);
+        String str1 = "ABCD";
+        String str2 = "BDCAB";
+//        System.out.println("最长公共子序列: " + findSubstring("foobarfoobar", new String[]{"foo", "bar"}));
+        System.out.println(Arrays.stream(str2.split("")).skip(1).limit(3).collect(Collectors.toList()));
     }
+
+
 }

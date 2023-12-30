@@ -1,4 +1,6 @@
-package com.zyl.leetcode;
+package com.zyl.arithmetrc.leetcode;
+
+import com.zyl.utils.ArrayUtil;
 
 import java.util.Arrays;
 
@@ -94,6 +96,21 @@ public class Sort {
         }
     }
 
+    public static void insertSort(int[] arr, int len){
+        for (int i = 1; i < len; i++) {
+            if(arr[i] < arr[i - 1]){
+
+                int temp = arr[i];
+                int p;
+                for (p = i; p - 1 >= 0 && arr[p - 1] > temp ; p--){
+                    arr[p] = arr[p - 1];
+                }
+                arr[p] = temp;
+            }
+        }
+
+    }
+
     // 希尔排序
     public static void shellSort(int[] arr) {
         // gap 为步长，每次减为原来的一半。
@@ -119,8 +136,8 @@ public class Sort {
 
     public static void main(String[] args) {
         // 示例用法
-        int[] nums = {1, 3, 4, 7, 5, 6, 9, 2};
-        insertSort(nums);
+        int[] nums = { 3,1, 4, 7, 5, 6, 9, 2};
+        insertSort(nums, 8);
         Arrays.stream(nums).boxed().forEach(System.out::println);
     }
 

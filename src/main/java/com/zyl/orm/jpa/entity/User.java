@@ -1,4 +1,4 @@
-package com.zyl.jpa.entity;
+package com.zyl.orm.jpa.entity;
 
 import lombok.Data;
 

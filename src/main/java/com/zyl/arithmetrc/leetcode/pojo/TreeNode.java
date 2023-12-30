@@ -1,4 +1,4 @@
-package com.zyl.leetcode.pojo;
+package com.zyl.arithmetrc.leetcode.pojo;
 
 
 import lombok.Data;

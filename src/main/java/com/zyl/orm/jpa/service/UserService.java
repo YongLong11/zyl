@@ -1,6 +1,6 @@
-package com.zyl.jpa.service;
+package com.zyl.orm.jpa.service;
 
-import com.zyl.jpa.entity.User;
+import com.zyl.orm.jpa.entity.User;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

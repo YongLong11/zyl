@@ -1,4 +1,4 @@
-package com.zyl.leetcode;
+package com.zyl.arithmetrc.leetcode;
 
 public class Singleton {
 
