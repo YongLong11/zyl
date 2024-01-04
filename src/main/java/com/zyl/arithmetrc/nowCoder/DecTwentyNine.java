@@ -220,6 +220,7 @@ public class DecTwentyNine {
         // write code here
         List<Integer> list = new ArrayList<>();
         dfs(root, list);
+        list.stream().toArray(Integer[]::new);
         return list.toArray(new Integer[1]);
     }
 

@@ -1,8 +1,13 @@
 package com.zyl.arithmetrc.leetcode.everyday;
 
 import javafx.util.Pair;
+import net.bytebuddy.build.AccessControllerPlugin;
 
+import java.security.Key;
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class DecThirteen {
@@ -134,6 +139,101 @@ public class DecThirteen {
             current.remove(current.size() - 1);
         }
     }
+
+
+    public class Lru {
+        private int capacity;
+        private Queue<Integer> order;
+
+        private Map<Integer, Integer> storageMap;
+        public Lru(int capacity) {
+            // write code here
+            this.capacity = capacity;
+            this.order = new ArrayDeque<>(capacity);
+            this.storageMap = new ConcurrentHashMap<>();
+        }
+
+        public int get(int key) {
+            // write code here
+            Integer result = storageMap.get(key);
+
+            order.removeIf(i -> i.equals(key));
+            order.add(key);
+
+            return result == null ? -1 : result;
+        }
+
+        public void set(int key, int value) {
+            // write code here
+            order.removeIf(i -> i.equals(key));
+            order.add(key);
+            storageMap.put(key, value);
+                if (storageMap.size() > this.capacity){
+                    Integer poll = order.poll();
+                    if(poll != null){
+                        storageMap.remove(poll);
+                    }
+
+            }
+
+
+        }
+    }
+
+    @FunctionalInterface
+    interface Function<T, U, R, P>{
+
+        P apply(T t, U u, R r);
+    }
+
+
+        public int[] LFU (int[][] operators, int k) {
+            // write code here
+            List<Integer> result = new ArrayList<>();
+            Queue<Integer> order = new ArrayDeque<>();
+            Map<Integer, Integer> storageMap = new HashMap<>();
+            Map<Integer, Function<Map<Integer, Integer>, Integer, Integer, Integer>> handleMap = new HashMap<>();
+            handleMap.put(1, (map, key, value) -> {
+                order.removeIf(i-> i.equals(key));
+                order.add(key);
+                if(!map.containsKey(key)){
+                    if (map.size() >= k){
+                        Integer poll = order.poll();
+                        if(poll != null){
+                            map.remove(poll);
+                        }
+                    }
+                }
+                map.put(key, value);
+                return null;
+            });
+            handleMap.put(2, (map, key, value) -> {
+                order.removeIf(i-> i.equals(key));
+                order.add(key);
+                return map.get(key);
+            });
+            for (int i = 0; i < operators.length; i++) {
+                Function<Map<Integer, Integer>, Integer, Integer, Integer> mapIntegerIntegerIntegerFunction = handleMap.get(get(operators, i, 0));
+                if(mapIntegerIntegerIntegerFunction != null){
+                    Integer apply = mapIntegerIntegerIntegerFunction.apply(storageMap, get(operators, i, 1), get(operators, i, 2));
+                    result.add(apply);
+                }
+            }
+            int[] resultArr = new int[result.size()];
+            for (int i = 0; i < result.size(); i++) {
+                resultArr[i] = result.get(i);
+            }
+            return resultArr;
+        }
+        private Integer get(int[][] operators, int row, int col){
+            try {
+               return operators[row][col];
+            }catch (IndexOutOfBoundsException e){
+                return null;
+            }
+        }
+
+
 
     public static void main(String[] args) {
 //        System.out.println(hasLeftRight(new int[]{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}, 2, 1));

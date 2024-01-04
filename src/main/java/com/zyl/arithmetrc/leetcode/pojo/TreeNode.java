@@ -14,7 +14,7 @@ public class TreeNode {
     TreeNode() {
     }
 
-    TreeNode(int var) {
+    public TreeNode(int var) {
         this.var = var;
     }
 

@@ -6,11 +6,12 @@ import com.zyl.something.httpAop.annotation.EnableHttpClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class}, nameGenerator = InterfaceAnnotationBeanNameGenerator.class)
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class}, nameGenerator = InterfaceAnnotationBeanNameGenerator.class)
 @EnableAsync
 @EnableFeignClients
 @EnableCaching

@@ -81,7 +81,7 @@ public class DecTwelve {
     }
 
     private static void dfs(int[] candidates, int begin, int len, int target, Deque<Integer> path, List<List<Integer>> res) {
-        // 由于进入更深层的时候，小于 0 的部分被剪枝，因此递归终止条件值只判断等于 0 的情况
+        // 由于进入更层的时候，小于 0 的部分被剪枝，因此递归终止条件值只判断等于 0 的情况
         if (target == 0) {
             res.add(new ArrayList<>(path));
             return;
