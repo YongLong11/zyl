@@ -20,6 +20,20 @@ spring:
         driver-class-name: com.mysql.cj.jdbc.Driver
         initialSize: 5
         minIdle: 5
+      zyl1:
+        jdbc-url: jdbc:mysql://10.30.7.107:3306/zyl?characterEncoding=UTF8&useSSL=false
+        username: dev_jcpt
+        password: ziroomdb
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        initialSize: 5
+        minIdle: 5
+      okr1:
+        jdbc-url: jdbc:mysql://10.30.7.107:3306/okr?characterEncoding=UTF8&useSSL=false
+        username: dev_jcpt
+        password: ziroomdb
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        initialSize: 5
+        minIdle: 5
   redis:
     host: 10.216.4.116
     port: 6384

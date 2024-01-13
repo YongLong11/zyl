@@ -1,7 +1,7 @@
-package com.zyl.cache.cache;
+package com.zyl.something.cache.cache;
 
 import com.alibaba.fastjson.JSON;
-import com.zyl.cache.constant.CacheConstant;
+import com.zyl.something.cache.constant.CacheConstant;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;

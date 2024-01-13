@@ -1,5 +1,6 @@
 package com.zyl.config;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,6 @@ public class ThreadFactoryConfig {
     public Executor threadForParallel(){
         int avail = Runtime.getRuntime().availableProcessors();
         return  new ThreadPoolExecutor(avail, 20, 10, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<>(), new ThreadPoolExecutor.CallerRunsPolicy());
+                new LinkedBlockingQueue<>(), (runnable) -> new Thread("") , new ThreadPoolExecutor.CallerRunsPolicy());
     }
 }

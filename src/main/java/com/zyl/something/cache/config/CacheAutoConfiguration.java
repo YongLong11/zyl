@@ -1,10 +1,10 @@
-package com.zyl.cache.config;
+package com.zyl.something.cache.config;
 
-import com.zyl.cache.aop.DoubleCacheAble;
-import com.zyl.cache.aop.DoubleCacheInterceptor;
-import com.zyl.cache.cache.*;
-import com.zyl.cache.constant.CacheConstant;
-import com.zyl.cache.listener.KeyExpirationListener;
+import com.zyl.something.cache.aop.DoubleCacheAble;
+import com.zyl.something.cache.aop.DoubleCacheInterceptor;
+import com.zyl.something.cache.constant.CacheConstant;
+import com.zyl.something.cache.listener.KeyExpirationListener;
+import com.zyl.something.cache.cache.*;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;

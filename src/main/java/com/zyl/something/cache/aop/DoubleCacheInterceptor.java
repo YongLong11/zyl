@@ -1,7 +1,7 @@
-package com.zyl.cache.aop;
+package com.zyl.something.cache.aop;
 
-import com.zyl.cache.cache.Cache;
-import com.zyl.cache.cache.PrefixKeyCache;
+import com.zyl.something.cache.cache.Cache;
+import com.zyl.something.cache.cache.PrefixKeyCache;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;

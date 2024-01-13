@@ -1,6 +1,6 @@
-package com.zyl.cache.aop;
+package com.zyl.something.cache.aop;
 
-import com.zyl.cache.constant.CacheConstant;
+import com.zyl.something.cache.constant.CacheConstant;
 
 import java.lang.annotation.*;
 import java.util.concurrent.TimeUnit;

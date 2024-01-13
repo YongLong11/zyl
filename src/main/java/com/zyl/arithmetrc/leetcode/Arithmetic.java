@@ -3,7 +3,10 @@ package com.zyl.arithmetrc.leetcode;
 import com.zyl.arithmetrc.leetcode.interview.Test;
 import com.zyl.arithmetrc.leetcode.pojo.TreeNode;
 import com.zyl.arithmetrc.leetcode.pojo.ListNode;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.experimental.UtilityClass;
+import org.checkerframework.checker.units.qual.A;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -1550,8 +1553,24 @@ public class Arithmetic {
         String str1 = "ABCD";
         String str2 = "BDCAB";
 //        System.out.println("最长公共子序列: " + findSubstring("foobarfoobar", new String[]{"foo", "bar"}));
-        System.out.println(Arrays.stream(str2.split("")).skip(1).limit(3).collect(Collectors.toList()));
+//        System.out.println(Arrays.stream(str2.split("")).skip(1).limit(3).collect(Collectors.toList()));
+        List<Sut> list = new ArrayList<>();
+        list.add(new Sut(1, 2));
+        list.add(new Sut(2, 2));
+        list.add(new Sut(1, 3));
+
+
+        List<Sut> collect = list.stream().sorted(Comparator.comparing(Sut::getAge).thenComparingInt(Sut::getId)).collect(Collectors.toList());
+        System.out.println(collect);
     }
+
+    @Data
+    @AllArgsConstructor
+    static class Sut{
+        int age;
+        int id;
+    }
+
 
 
 }

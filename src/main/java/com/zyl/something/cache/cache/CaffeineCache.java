@@ -1,22 +1,22 @@
-package com.zyl.cache.cache;
+package com.zyl.something.cache.cache;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.zyl.cache.constant.CacheConstant;
+import com.zyl.something.cache.constant.CacheConstant;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-public class CaffeineCache implements com.zyl.cache.cache.Cache {
+public class CaffeineCache implements com.zyl.something.cache.cache.Cache {
     private final Cache<String, Object> cache;
 
-    private com.zyl.cache.cache.Cache redisCache;
+    private com.zyl.something.cache.cache.Cache redisCache;
 
-    public CaffeineCache(com.zyl.cache.cache.Cache cache, int duration){
+    public CaffeineCache(com.zyl.something.cache.cache.Cache cache, int duration){
         this(cache, CacheConstant.minSize, CacheConstant.maxSize, duration);
     }
 
-    public CaffeineCache(com.zyl.cache.cache.Cache cache, int minSize, int maxSize, int duration){
+    public CaffeineCache(com.zyl.something.cache.cache.Cache cache, int minSize, int maxSize, int duration){
         this.cache = Caffeine.newBuilder().initialCapacity(minSize).maximumSize(maxSize).build();
         this.redisCache = cache;
     }

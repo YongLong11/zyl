@@ -1,4 +1,4 @@
-package com.zyl.cache.constant;
+package com.zyl.something.cache.constant;
 
 public interface CacheConstant {
     int maxSize = 4000000;

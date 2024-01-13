@@ -104,7 +104,56 @@ public class JanFour {
     };
 
 
+    // 思路：数组分为两部分，每一部分求最大差值
+    public static int maxProfit (int[] prices) {
+        // write code here
+        if(prices == null){
+            return 0;
+        }
+        if (prices.length < 4){
+            return getMax(prices, 0 , prices.length - 1);
+        }
+        // 只进行一次股票买卖的最大值
+        int oneProfit = getMax(prices, 0 , prices.length - 1);
+
+        // 进行两次股票买卖的最大值
+        // 两次股票，中间砍一刀，左右两边长度都要 >= 2
+        int twiceProfit = 0;
+        int leftLen = 2;
+        int rightLen = prices.length - leftLen;
+        int leftStartIndex = 0;
+        int leftEndIndex = leftStartIndex + leftLen - 1;
+        int rightStartIndex = prices.length - rightLen;
+        int rightEndIndex = prices.length - 1;
+//        while (leftEndIndex <= prices.length - 3 && rightEndIndex < prices.length){
+        while (leftLen >= 2 && rightLen >= 2){
+            int leftMax = getMax(prices, leftStartIndex, leftEndIndex);
+            int rightMax = getMax(prices, rightStartIndex, rightEndIndex);
+            twiceProfit = Math.max(leftMax + rightMax, twiceProfit);
+            leftLen++;
+            rightLen--;
+            leftEndIndex = leftStartIndex + leftLen - 1;
+            rightStartIndex = prices.length - rightLen;
+        }
+        return Math.max(oneProfit, twiceProfit);
+    }
+
+    public static int getMax(int[] prices, int startIndex, int endIndx){
+        if(endIndx - startIndex < 1){
+            return 0;
+        }
+        int max = 0;
+        for (int i = startIndex; i < endIndx; i++) {
+            for (int p = i + 1 ; p <= endIndx ; p++) {
+                int cur = prices[p] - prices[i];
+                max = Math.max(cur, max);
+            }
+        }
+        return max;
+    }
+
     public static void main(String[] args) {
-        System.out.println(longestValidParentheses("(()"));
+        int[] arr = new int[]{1, 2, 8, 3, 8};
+        System.out.println(maxProfit(arr));
     }
 }
