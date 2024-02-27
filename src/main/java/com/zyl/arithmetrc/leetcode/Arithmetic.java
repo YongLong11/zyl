@@ -1,12 +1,11 @@
 package com.zyl.arithmetrc.leetcode;
 
-import com.zyl.arithmetrc.leetcode.interview.Test;
+import com.zyl.arithmetrc.interview.Test;
 import com.zyl.arithmetrc.leetcode.pojo.TreeNode;
 import com.zyl.arithmetrc.leetcode.pojo.ListNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.UtilityClass;
-import org.checkerframework.checker.units.qual.A;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -1534,6 +1533,22 @@ public class Arithmetic {
             indexOf(source, str, ret, index + 1);
         }
     }
+
+//    public List<Integer> getRepeat(String string){
+////        int first = 0;
+////        int second = 1;
+//        String[] split = string.split("");
+//
+//        for (int first = 0; first < split.length; first++) {
+//            String str = split[first];
+//            int second = string.indexOf(str, first + 1);
+//            if(second > i){
+//                continue;
+//            }else {
+//
+//            }
+//        }
+//    }
 
 
     public static void main(String[] args) {

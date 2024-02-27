@@ -142,14 +142,18 @@ public class JanFour {
         if(endIndx - startIndex < 1){
             return 0;
         }
-        int max = 0;
-        for (int i = startIndex; i < endIndx; i++) {
-            for (int p = i + 1 ; p <= endIndx ; p++) {
-                int cur = prices[p] - prices[i];
-                max = Math.max(cur, max);
+        int min = prices[startIndex];
+        int maxDiff = prices[startIndex + 1] - min;
+        for (int i = startIndex; i <= endIndx; i++) {
+            int current = prices[i];
+            if(current < min){
+                min = current;
+            }
+            if(current - min > maxDiff){
+                maxDiff = current - min;
             }
         }
-        return max;
+        return maxDiff;
     }
 
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package com.zyl.arithmetrc.leetcode.interview;
+package com.zyl.arithmetrc.interview;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
