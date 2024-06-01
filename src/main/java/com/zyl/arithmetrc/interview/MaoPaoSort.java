@@ -1,4 +1,4 @@
-package com.zyl.arithmetrc;
+package com.zyl.arithmetrc.interview;
 
 import java.util.Arrays;
 
